@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cate Pates · Fig Tree Studio</title>
+<meta name="description" content="Ceramic artist Cate Pates — foxes, hares, little hanging houses and vessels inscribed with poetry. Lower Hutt, Wellington.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1C1C1A; --muted: #6B6A64; --line: #E5E3DE; --green: #2E5B3F; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FFFFFF; color: var(--ink); font-family: 'Instrument Sans', sans-serif; }
+  a { color: var(--ink); }
+  a:hover { color: var(--green); }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 48px 0 32px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(40px, 6vw, 64px); }
+  .sub { margin: 8px 0 0; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .note { margin: 24px 0 0; font-size: 18px; line-height: 1.6; max-width: 46ch; }
+  h2 { margin: 56px 0 28px; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 48px 32px; padding-bottom: 96px; }
+  .card { display: flex; flex-direction: column; gap: 12px; text-decoration: none; text-align: center; }
+  .card img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #F6F5F2; }
+  .title { font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 500; }
+  .meta { font-size: 14px; color: var(--muted); }
+  .meta strong { color: var(--ink); font-weight: 600; }
+  .buy { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--green); }
+  .empty { padding: 48px 24px 96px; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 28px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Cate Pates</h1>
+    <p class="sub">Fig Tree Studio · Ceramics</p>
+    <p class="note">A new website is on its way. In the meantime, here's what's available now at ORA Gallery, Wellington.</p>
+  </div>
+</header>
+
+<main class="wrap" data-ora-section>
+  <h2>Available now</h2>
+  <div class="grid" data-ora-grid></div>
+  <p class="empty" data-ora-empty hidden>Everything has found a home for now.</p>
+</main>
+
+<footer>
+  <div class="wrap">© <span data-year></span> Cate Pates · Fig Tree Studio · Lower Hutt, Wellington ·
+    <a href="https://instagram.com/catepates_fig_tree_studio">Instagram</a> ·
+    <a href="https://www.facebook.com/figtreeclaystudio">Facebook</a>
+  </div>
+</footer>
+
+<script type="module">
+  document.querySelector('[data-year]').textContent = new Date().getFullYear();
+
+  const section = document.querySelector('[data-ora-section]');
+  const grid = section.querySelector('[data-ora-grid]');
+  const empty = section.querySelector('[data-ora-empty]');
+
+  try {
+    const { pieces } = await (await fetch('data/ora.json')).json();
+    for (const p of pieces) {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = p.url;
+      a.dataset.oraHandle = p.handle;
+      const img = Object.assign(document.createElement('img'), { src: p.image, alt: p.alt, loading: 'lazy' });
+      const title = Object.assign(document.createElement('span'), { className: 'title', textContent: p.title });
+      const meta = document.createElement('span');
+      meta.className = 'meta';
+      const price = Object.assign(document.createElement('strong'), { textContent: p.price });
+      price.dataset.oraPrice = '';
+      meta.append(price, p.size ? ` · ${p.size}` : '');
+      const buy = Object.assign(document.createElement('span'), { className: 'buy', textContent: 'Buy at ORA →' });
+      a.append(img, title, meta, buy);
+      grid.append(a);
+    }
+    empty.hidden = pieces.length > 0;
+  } catch {
+    empty.hidden = false;
+  }
+
+  // Then double-check with ORA in case anything sold since the last build.
+  await import('./js/ora-live.js');
+</script>
+</body>
+</html>

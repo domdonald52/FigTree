@@ -1,0 +1,13 @@
+{
+  "name": "figtree-studio",
+  "private": true,
+  "type": "module",
+  "description": "Website for Cate Pates · Fig Tree Studio",
+  "scripts": {
+    "ora": "node scripts/fetch-ora.mjs",
+    "build": "npm run ora"
+  },
+  "dependencies": {
+    "sharp": "^0.34.0"
+  }
+}

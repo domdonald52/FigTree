@@ -1,0 +1,23 @@
+# Rebuilds the site once a day so new ORA pieces (and their trimmed photos) appear
+# without anyone touching it. Needs a Netlify build hook URL saved as the repository
+# secret NETLIFY_BUILD_HOOK (Netlify: Site configuration → Build & deploy → Build hooks).
+name: Daily refresh
+
+on:
+  schedule:
+    - cron: '17 17 * * *' # 5:17am NZ time (UTC+12/13)
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK is not set yet; skipping."
+            exit 0
+          fi
+          curl -fsS -X POST -d '{}' "$HOOK"

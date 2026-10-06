@@ -1,0 +1,86 @@
+{
+  "updated": "2026-10-06T22:49:30.535Z",
+  "pieces": [
+    {
+      "handle": "dappled-leaves",
+      "title": "Dappled Leaves",
+      "price": "$290",
+      "size": "200 × 80 × 120 mm",
+      "image": "ora/dappled-leaves.jpg",
+      "alt": "Dappled Leaves by Cate Pates",
+      "url": "https://oragallery.co.nz/products/dappled-leaves"
+    },
+    {
+      "handle": "tui-blossom-vessel",
+      "title": "Tui Blossom Vessel",
+      "price": "$330",
+      "size": "170 × 80 × 125 mm",
+      "image": "ora/tui-blossom-vessel.jpg",
+      "alt": "Tui Blossom Vessel by Cate Pates",
+      "url": "https://oragallery.co.nz/products/tui-blossom-vessel"
+    },
+    {
+      "handle": "fox-1",
+      "title": "Fox & Crow with Secret Rose",
+      "price": "$400",
+      "size": "200 × 110 × 90 mm",
+      "image": "ora/fox-1.jpg",
+      "alt": "Fox & Crow with Secret Rose by Cate Pates",
+      "url": "https://oragallery.co.nz/products/fox-1"
+    },
+    {
+      "handle": "fox",
+      "title": "Fox & Bluebird With Secret Rose",
+      "price": "$400",
+      "size": "225 × 110 × 120 mm",
+      "image": "ora/fox.jpg",
+      "alt": "Fox & Bluebird With Secret Rose by Cate Pates",
+      "url": "https://oragallery.co.nz/products/fox"
+    },
+    {
+      "handle": "hanging-embossed-hearts-copy",
+      "title": "Hanging Embossed Hearts",
+      "price": "$38",
+      "size": "95 × 90 mm",
+      "image": "ora/hanging-embossed-hearts-copy.jpg",
+      "alt": "Hanging Embossed Hearts by Cate Pates",
+      "url": "https://oragallery.co.nz/products/hanging-embossed-hearts-copy"
+    },
+    {
+      "handle": "emerald-with-dawn-roses-2",
+      "title": "Emerald with Dawn Roses",
+      "price": "$300",
+      "size": "200 × 145 × 110 mm",
+      "image": "ora/emerald-with-dawn-roses-2.jpg",
+      "alt": "Emerald with Dawn Roses by Cate Pates",
+      "url": "https://oragallery.co.nz/products/emerald-with-dawn-roses-2"
+    },
+    {
+      "handle": "bloom-and-leaves-sing-life",
+      "title": "Bloom and Leaves Sing Life",
+      "price": "$300",
+      "size": "175 × 110 × 105 mm",
+      "image": "ora/bloom-and-leaves-sing-life.jpg",
+      "alt": "Bloom and Leaves Sing Life by Cate Pates",
+      "url": "https://oragallery.co.nz/products/bloom-and-leaves-sing-life"
+    },
+    {
+      "handle": "large-hare",
+      "title": "Large Hare",
+      "price": "$380",
+      "size": "215 × 115 × 95 mm",
+      "image": "ora/large-hare.jpg",
+      "alt": "Large Hare by Cate Pates",
+      "url": "https://oragallery.co.nz/products/large-hare"
+    },
+    {
+      "handle": "little-houses",
+      "title": "Little Houses",
+      "price": "$135",
+      "size": "110 × 85 × 70 mm",
+      "image": "ora/little-houses.jpg",
+      "alt": "Little Houses by Cate Pates",
+      "url": "https://oragallery.co.nz/products/little-houses"
+    }
+  ]
+}
