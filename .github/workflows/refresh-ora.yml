@@ -1,0 +1,24 @@
+# Rebuilds the site on demand, so pieces newly listed at ORA get trimmed photos.
+# (New pieces already appear on the site straight away with ORA's own photo, so this is
+# optional.) Each run is a production deploy and uses Netlify credits, so it only runs
+# when started by hand: GitHub → Actions → Refresh ORA photos → Run workflow.
+# Needs a Netlify build hook URL saved as the repository secret NETLIFY_BUILD_HOOK
+# (Netlify: Project configuration → Build & deploy → Build hooks, branch main).
+name: Refresh ORA photos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK is not set yet; skipping."
+            exit 0
+          fi
+          curl -fsS -X POST -d '{}' "$HOOK"

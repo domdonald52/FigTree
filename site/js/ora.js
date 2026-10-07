@@ -2,8 +2,10 @@
 //
 // The pieces and their trimmed photos are prepared when the site is built
 // (scripts/fetch-ora.mjs → data/ora.json). On page load this draws them, then checks
-// ORA's shop once more so anything sold since the last build disappears and price
-// changes show. If ORA can't be reached, the built list is shown as it is.
+// ORA's shop once more: anything sold since the last build disappears, price changes
+// show, and pieces listed since the last build are added straight away using ORA's own
+// photo (they get a trimmed photo at the next build). If ORA can't be reached, the
+// built list is shown as it is.
 //
 // Markup:
 //   <section data-ora>
@@ -16,6 +18,31 @@ const FEED = 'https://oragallery.co.nz/collections/cate-pates/products.json?limi
 function priceText(value) {
   const n = Number(value);
   return Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`;
+}
+
+function textOf(html) {
+  return (html || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Same as sizeFrom in scripts/fetch-ora.mjs: "200 x 80 x 120mm" → "200 × 80 × 120 mm"
+function sizeFrom(bodyHtml) {
+  const m = textOf(bodyHtml).match(/Dimensions:\s*((?:[\d.]+\s*(?:mm)?\s*[x×]\s*)*[\d.]+\s*mm)/i);
+  if (!m) return '';
+  return `${m[1].split(/\s*[x×]\s*/i).map((x) => x.replace(/mm/i, '').trim()).join(' × ')} mm`;
+}
+
+// A piece listed on ORA since the last build, shown with ORA's own photo.
+function fromFeed(p, price) {
+  const src = p.images?.[0]?.src;
+  return {
+    handle: p.handle,
+    title: p.title,
+    price,
+    size: sizeFrom(p.body_html),
+    image: src ? `${src}${src.includes('?') ? '&' : '?'}width=900` : '',
+    alt: `${p.title} by Cate Pates`,
+    url: `https://oragallery.co.nz/products/${p.handle}`,
+  };
 }
 
 function el(tag, props = {}, ...children) {
@@ -47,7 +74,7 @@ function showEmpty(section, isEmpty) {
   if (grid) grid.hidden = isEmpty;
 }
 
-async function liveCheck(sections) {
+async function liveCheck(sections, builtHandles) {
   let products;
   try {
     const res = await fetch(FEED);
@@ -59,20 +86,27 @@ async function liveCheck(sections) {
   const live = new Map();
   for (const p of products) {
     const v = p.variants?.[0];
-    if (v?.available) live.set(p.handle, priceText(v.price));
+    if (v?.available) live.set(p.handle, { product: p, price: priceText(v.price) });
   }
   for (const section of sections) {
-    let shown = 0;
-    for (const c of section.querySelectorAll('[data-ora-handle]')) {
-      const price = live.get(c.dataset.oraHandle);
-      if (!price) {
+    const grid = section.querySelector('[data-ora-grid]');
+    const known = new Set(builtHandles);
+    for (const c of grid.querySelectorAll('[data-ora-handle]')) {
+      const item = live.get(c.dataset.oraHandle);
+      if (!item) {
         c.remove();
         continue;
       }
-      c.querySelector('[data-ora-price]').textContent = price;
-      shown += 1;
+      c.querySelector('[data-ora-price]').textContent = item.price;
     }
-    showEmpty(section, shown === 0);
+    // New pieces go first, the way ORA lists them (newest first).
+    const added = [...live.values()]
+      .filter(({ product }) => !known.has(product.handle) && product.images?.length)
+      .map(({ product, price }) => card(fromFeed(product, price)));
+    grid.prepend(...added);
+    const limit = Number(grid.dataset.oraLimit);
+    if (limit) [...grid.children].slice(limit).forEach((c) => c.remove());
+    showEmpty(section, grid.children.length === 0);
   }
 }
 
@@ -94,7 +128,7 @@ async function init() {
     showEmpty(section, pieces.length === 0);
   }
 
-  await liveCheck(sections);
+  await liveCheck(sections, pieces.map((p) => p.handle));
 }
 
 init();

@@ -6,7 +6,8 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 
 - **Netlify project:** https://app.netlify.com/projects/figtreestudionz/overview
 - **Live site:** https://figtreestudionz.netlify.app
-- **GitHub repository:** https://github.com/domdonald52/FigTree (branch `claude/cate-pates-portfolio-l2zfyj`)
+- **GitHub repository:** https://github.com/domdonald52/FigTree (live site publishes from `main`; work happens on `claude/cate-pates-portfolio-l2zfyj`)
+- **Preview of work in progress (free):** https://claude-cate-pates-portfolio-l2zfyj--figtreestudionz.netlify.app
 - **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
 - **Cate's work at ORA Gallery:** https://oragallery.co.nz/collections/cate-pates
 - **Google Sheet for workshops / galleries / exhibitions:** _to be added_
@@ -14,7 +15,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 ## Next steps
 
 1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
-2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` to switch on the daily ORA refresh.
+2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` so ORA photos can be refreshed by hand (see below).
 3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
 
 The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instrument Sans, fig tree mark). Pages live in `site/`:
@@ -46,14 +47,23 @@ Nobody needs to edit the site when a piece sells or a price changes.
    - saves the title, price, size and ORA link to `site/data/ora.json` (photos go in `site/ora/`).
 
    If ORA can't be reached, the last saved data is kept and the build carries on.
-2. **When someone visits**, `site/js/ora.js` draws the pieces and checks ORA once more: pieces sold since the last build disappear and price changes show straight away.
-3. **Once a day**, the GitHub Action in `.github/workflows/daily-refresh.yml` asks Netlify to rebuild, so new pieces appear with trimmed photos. It needs a Netlify build hook URL saved as the repository secret `NETLIFY_BUILD_HOOK`.
+2. **When someone visits**, `site/js/ora.js` draws the pieces and checks ORA once more: pieces sold since the last build disappear, price changes show, and pieces listed since the last build appear straight away with ORA's own photo.
+3. **Optional, by hand:** the next build gives new pieces trimmed photos. To force one, run the GitHub Action *Refresh ORA photos* (`.github/workflows/refresh-ora.yml`; Actions → Run workflow). It needs a Netlify build hook URL saved as the repository secret `NETLIFY_BUILD_HOOK`. Each run is a production deploy (15 credits).
+
+## Saving Netlify credits
+
+On the free plan each production deploy costs 15 of the 300 monthly credits; branch deploys and previews are free.
+
+- Changes go to `claude/cate-pates-portfolio-l2zfyj` first and show on the free preview link above.
+- When happy, merge them into `main` in one go (one pull request = one production deploy).
+- Builds are skipped automatically when only files outside the site change (e.g. this README) — see `ignore` in `netlify.toml`.
 
 ## Netlify setup
 
 - Import this repository in Netlify ("Add new site → Import an existing project → GitHub").
 - Build command and publish folder come from `netlify.toml` (`npm run build`, `site`).
-- Create a build hook (Site configuration → Build & deploy → Build hooks) and save its URL in GitHub as the `NETLIFY_BUILD_HOOK` secret to switch on the daily refresh.
+- Production branch: `main`. Branch deploys: `claude/cate-pates-portfolio-l2zfyj` only.
+- Optional: create a build hook for `main` (Project configuration → Build & deploy → Build hooks) and save its URL in GitHub as the `NETLIFY_BUILD_HOOK` secret for the manual ORA photo refresh.
 
 Please check with ORA Gallery that they're happy for their listings and photos to appear here.
 

@@ -1,6 +1,11 @@
 [build]
   command = "npm run build"
   publish = "site"
+  # Skip the build (and its credits) when new commits change nothing that affects the
+  # site, e.g. README edits. Rebuilds of the same commit (build hook, "Deploy site")
+  # always go ahead. Exit 0 = skip, 1 = build.
+  ignore = '[ -n "$CACHED_COMMIT_REF" ] && [ "$CACHED_COMMIT_REF" != "$COMMIT_REF" ] && git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- site scripts package.json package-lock.json netlify.toml'
+
 
 [build.environment]
   NODE_VERSION = "22"
