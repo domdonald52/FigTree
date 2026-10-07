@@ -2,6 +2,21 @@
 
 Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington), hosted on Netlify.
 
+## Quick links
+
+- **Netlify project:** https://app.netlify.com/projects/figtreestudionz/overview
+- **Live site:** https://figtreestudionz.netlify.app
+- **GitHub repository:** https://github.com/domdonald52/FigTree (branch `claude/cate-pates-portfolio-l2zfyj`)
+- **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
+- **Cate's work at ORA Gallery:** https://oragallery.co.nz/collections/cate-pates
+- **Google Sheet for workshops / galleries / exhibitions:** _to be added_
+
+## Next steps
+
+1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
+2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` to switch on the daily ORA refresh.
+3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
+
 The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instrument Sans, fig tree mark). Pages live in `site/`:
 
 | Page | File |
