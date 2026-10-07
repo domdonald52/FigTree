@@ -4,3 +4,10 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Keep the site out of search engines until it's launched.
+# Remove this block (and site/robots.txt) when Cate is ready to go public.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

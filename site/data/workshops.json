@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2026-10-24",
+    "time": "1:30–4pm",
+    "name": "Blue tile workshop",
+    "venue": "[Venue], [suburb]",
+    "price": "",
+    "blurb": "Model a hare, birds or leaves in relief on a clay tile, finished in a deep sea-blue glaze.",
+    "register": "",
+    "details": "",
+    "draft": true
+  },
+  {
+    "date": "2026-11-14",
+    "time": "2–4:30pm",
+    "name": "Wall art workshop",
+    "venue": "Maungaraki Community Centre, 135 Dowse Drive",
+    "price": "",
+    "blurb": "Make a fox, bird or heart for the wall, pressed with flowers and leaves and glazed in rich green.",
+    "register": "",
+    "details": "",
+    "draft": true
+  }
+]
