@@ -10,6 +10,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 - **Preview of work in progress (free):** https://claude-cate-pates-portfolio-l2zfyj--figtreestudionz.netlify.app
 - **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
 - **Cate's work at ORA Gallery:** https://oragallery.co.nz/collections/cate-pates
+- **Cate's work at The Vault:** https://www.thevaultnz.com/category/cate-pates/474.aspx
 - **Google Sheet for workshops / galleries / exhibitions:** _to be added_
 
 ## Next steps
@@ -23,7 +24,7 @@ The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instru
 | Page | File |
 |---|---|
 | Home | `site/index.html` |
-| Work — available now at ORA + selected past work | `site/work.html` |
+| Gallery — available now at ORA and The Vault + selected past work | `site/work.html` |
 | Workshops | `site/workshops.html` |
 | Media — articles, podcasts, radio, video | `site/media.html` |
 | About + contact form | `site/about.html` (form handled by Netlify Forms; thank-you page `site/thanks.html`) |
@@ -53,7 +54,7 @@ Nobody needs to edit the site when a piece sells or a price changes.
 
    If ORA can't be reached, the last saved data is kept and the build carries on.
 2. **When someone visits**, `site/js/ora.js` draws the pieces and checks ORA once more: pieces sold since the last build disappear, price changes show, and pieces listed since the last build appear straight away with ORA's own photo.
-3. **Optional, by hand:** the next build gives new pieces trimmed photos. To force one, run the GitHub Action *Refresh ORA photos* (`.github/workflows/refresh-ora.yml`; Actions → Run workflow). It needs a Netlify build hook URL saved as the repository secret `NETLIFY_BUILD_HOOK`. Each run is a production deploy (15 credits).
+3. **Optional, by hand:** the next build gives new pieces trimmed photos (and refreshes The Vault list). To force one, run the GitHub Action *Refresh ORA photos* (`.github/workflows/refresh-ora.yml`; Actions → Run workflow). It needs a Netlify build hook URL saved as the repository secret `NETLIFY_BUILD_HOOK`. Each run is a production deploy (15 credits).
 
 ## Saving Netlify credits
 
@@ -62,6 +63,10 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 - Changes go to `claude/cate-pates-portfolio-l2zfyj` first and show on the free preview link above.
 - When happy, merge them into `main` in one go (one pull request = one production deploy).
 - Builds are skipped automatically when only files outside the site change (e.g. this README) — see `ignore` in `netlify.toml`.
+
+## Pieces at The Vault
+
+`scripts/fetch-vault.mjs` does the same job for The Vault (2 Plimmer Steps, Wellington) on every build: it reads Cate's artist page on thevaultnz.com and each product page, frames the photos the same way (shared code in `scripts/frame-photo.mjs`) and writes `site/data/vault.json` and `site/vault/`. The Vault's shop has no data feed and can't be checked from the browser, so unlike ORA the Vault list is as of the last build: sold pieces drop off, and new ones appear, at the next deploy. If the page can't be read, the previous list is kept.
 
 ## Netlify setup
 

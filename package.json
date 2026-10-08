@@ -2,10 +2,11 @@
   "name": "figtree-studio",
   "private": true,
   "type": "module",
-  "description": "Website for Cate Pates · Fig Tree Studio",
+  "description": "Website for Cate Pates \u00b7 Fig Tree Studio",
   "scripts": {
     "ora": "node scripts/fetch-ora.mjs",
-    "build": "npm run ora"
+    "build": "npm run ora && npm run vault",
+    "vault": "node scripts/fetch-vault.mjs"
   },
   "dependencies": {
     "sharp": "^0.34.0"

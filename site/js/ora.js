@@ -1,4 +1,4 @@
-// Shows Cate's pieces that are for sale at ORA Gallery.
+// Shows Cate's pieces that are for sale at ORA Gallery and The Vault.
 //
 // The pieces and their trimmed photos are prepared when the site is built
 // (scripts/fetch-ora.mjs → data/ora.json). On page load this draws them, then checks
@@ -51,7 +51,7 @@ function el(tag, props = {}, ...children) {
   return node;
 }
 
-function card(p) {
+function card(p, buy = 'Buy at ORA →') {
   const price = el('strong', { textContent: p.price });
   price.dataset.oraPrice = '';
   const meta = el('span', { className: 'piece-meta' }, price, p.size ? ` · ${p.size}` : '');
@@ -61,7 +61,7 @@ function card(p) {
     el('img', { src: p.image, alt: p.alt, loading: 'lazy', width: 900, height: 1125 }),
     el('span', { className: 'piece-title', textContent: p.title }),
     meta,
-    el('span', { className: 'piece-buy', textContent: 'Buy at ORA →' }),
+    el('span', { className: 'piece-buy', textContent: buy }),
   );
   link.dataset.oraHandle = p.handle;
   return link;
@@ -124,11 +124,27 @@ async function init() {
   for (const section of sections) {
     const grid = section.querySelector('[data-ora-grid]');
     const limit = Number(grid.dataset.oraLimit) || pieces.length;
-    grid.replaceChildren(...pieces.slice(0, limit).map(card));
+    grid.replaceChildren(...pieces.slice(0, limit).map((p) => card(p)));
     showEmpty(section, pieces.length === 0);
   }
 
   await liveCheck(sections, pieces.map((p) => p.handle));
 }
 
+// Pieces at The Vault, prepared at build time by scripts/fetch-vault.mjs. The Vault's shop
+// can't be checked live from the browser, so this list is as of the last build.
+async function initVault() {
+  const section = document.querySelector('[data-vault]');
+  if (!section) return;
+  let pieces = [];
+  try {
+    ({ pieces } = await (await fetch('/data/vault.json')).json());
+  } catch {
+    // leave the section hidden
+  }
+  section.querySelector('[data-vault-grid]').replaceChildren(...pieces.map((p) => card(p, 'Buy at The Vault →')));
+  section.hidden = pieces.length === 0;
+}
+
 init();
+initVault();

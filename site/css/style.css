@@ -58,6 +58,8 @@ a:hover { color: var(--green); }
 .stack { display: flex; flex-direction: column; gap: 20px; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 32px; border-top: 1px solid var(--line); padding-top: 28px; margin-bottom: 40px; }
 .section-head .stack { gap: 6px; }
+.gallery-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px; padding: 40px 0 28px; }
+[data-vault] .gallery-head { margin-top: 48px; border-top: 1px solid var(--line); }
 .live-note { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
 .live-note::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 @media (max-width: 600px) { .section { padding-block: 64px; } }
