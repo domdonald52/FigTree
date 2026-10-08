@@ -1,0 +1,34 @@
+[
+  {
+    "date": "2026-09",
+    "type": "Podcast",
+    "title": "Placeholder: Talking clay, foxes and storytelling",
+    "outlet": "Example Podcast · Episode 12",
+    "blurb": "Placeholder text. A short line about what the episode covers, e.g. Cate talks about hand-building, her glazes and the creatures in her work.",
+    "link": "#"
+  },
+  {
+    "date": "2026-06",
+    "type": "Article",
+    "title": "Placeholder: Meet the makers of the Lower Hutt Art Trail",
+    "outlet": "Example Magazine",
+    "blurb": "Placeholder text. One or two sentences summarising the article.",
+    "link": "#"
+  },
+  {
+    "date": "2026-03",
+    "type": "Radio",
+    "title": "Placeholder: Interview on local arts radio",
+    "outlet": "Example FM",
+    "blurb": "Placeholder text.",
+    "link": "#"
+  },
+  {
+    "date": "2025-11",
+    "type": "Video",
+    "title": "Placeholder: In the studio with Cate Pates",
+    "outlet": "Example Channel",
+    "blurb": "Placeholder text.",
+    "link": "#"
+  }
+]

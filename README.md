@@ -14,7 +14,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 
 ## Next steps
 
-1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
+1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**, **Media**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
 2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` so ORA photos can be refreshed by hand (see below).
 3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
 
@@ -25,6 +25,7 @@ The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instru
 | Home | `site/index.html` |
 | Work — available now at ORA + selected past work | `site/work.html` |
 | Workshops | `site/workshops.html` |
+| Media — articles, podcasts, radio, video | `site/media.html` |
 | About + contact form | `site/about.html` (form handled by Netlify Forms; thank-you page `site/thanks.html`) |
 
 Shared styles are in `site/css/style.css`. The site is kept out of search engines until launch (`site/robots.txt` and the header in `netlify.toml`) — remove both to go public.
@@ -32,6 +33,10 @@ Shared styles are in `site/css/style.css`. The site is kept out of search engine
 ## Workshops
 
 Upcoming workshops come from `site/data/workshops.json` (see `site/js/workshops.js` for the fields). Workshops whose date has passed, or that have `"draft": true`, are hidden; when none are left the page shows "New dates coming soon". The two current entries are drafts until real dates, venues, prices and links are confirmed. This can later read from Cate's Google Sheet instead.
+
+## Media
+
+Articles, podcasts, radio and video features come from `site/data/media.json` (see `site/js/media.js` for the fields: date, type, title, outlet, blurb, link, draft), newest first. The link reads *Listen* for podcasts and radio, *Watch* for video and *Read* otherwise. **The four current entries are placeholders — replace them or mark them `"draft": true` before going live.** This can later read a **Media** tab in the Google Sheet (`date | type | title | outlet | description | link | show`).
 
 ## Contact form
 
