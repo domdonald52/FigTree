@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website status · Cate Pates</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/img/fig-tree-mark.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="wrap section" style="max-width: 760px">
+  <h1 class="h2">Website status</h1>
+  <p class="lede" style="max-width: none; margin: 8px 0 32px">Checks the connection to the Google Sheet and Stripe. Refresh to check again.</p>
+  <div class="terms" data-status><p>Checking…</p></div>
+</main>
+<script type="module">
+const box = document.querySelector('[data-status]');
+const tick = (ok) => (ok ? '✅' : '❌');
+try {
+  const s = await (await fetch('/api/status', { cache: 'no-store' })).json();
+  const rows = [];
+  rows.push(`<h2 class="h3">Google Sheet</h2>`);
+  if (!s.sheet.configured) {
+    rows.push(`<p>${tick(false)} Not connected. Add <code>SHEET_ID</code> in Netlify → Environment variables, then retry this branch's deploy.</p>`);
+  } else {
+    rows.push('<ul>' + Object.entries(s.sheet.tabs).map(([tab, t]) => t.ok
+      ? `<li>${tick(true)} <strong>${tab}</strong>: ${t.rows} row${t.rows === 1 ? '' : 's'}${tab === 'Studio' ? ` (${t.withPaymentLink} with a Stripe payment link)` : ''}</li>`
+      : `<li>${tick(false)} <strong>${tab}</strong>: ${t.error}</li>`).join('') + '</ul>');
+  }
+  rows.push(`<h2 class="h3">Stripe</h2><ul>`);
+  rows.push(`<li>${tick(s.stripe.webhookSecretSet)} Webhook signing secret ${s.stripe.webhookSecretSet ? 'is set' : 'is not set (add <code>STRIPE_WEBHOOK_SECRET</code> in Netlify)'}</li>`);
+  const sold = s.stripe.soldPieces;
+  rows.push(`<li>Pieces Stripe has reported as sold: ${Array.isArray(sold) ? (sold.length ? sold.join(', ') : 'none yet') : sold}</li></ul>`);
+  box.innerHTML = rows.join('');
+} catch {
+  box.innerHTML = '<p>❌ The status check itself isn\'t available. It only works on the Netlify site, not when the pages are opened as files.</p>';
+}
+</script>
+</body>
+</html>
