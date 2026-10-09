@@ -6,7 +6,8 @@
 // Workshops whose date has passed, or marked "draft": true, are not shown. When none are
 // left, the "New dates coming soon" message appears instead.
 // Rows come from the Workshops tab of Cate's Google Sheet when it's connected (see sheet.js),
-// otherwise from data/workshops.json. "soldOut": true shows "Sold out" instead of Register.
+// otherwise from data/workshops.json. "soldOut": true shows "Sold out" instead of the booking button.
+// A Humanitix (or Eventbrite/Eventfinda) booking link gets "Book a place" plus "Tickets through Humanitix".
 
 import { sheetRows, isYes } from './sheet.js';
 
@@ -14,6 +15,17 @@ function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
   node.append(...children);
   return node;
+}
+
+// Where a booking link goes, so the button can say so ("Book on Humanitix").
+const PROVIDERS = [['humanitix.com', 'Humanitix'], ['eventbrite.', 'Eventbrite'], ['eventfinda.', 'Eventfinda'], ['buy.stripe.com', 'Stripe']];
+export function providerOf(url) {
+  try {
+    const host = new URL(url).hostname;
+    return PROVIDERS.find(([d]) => host.includes(d))?.[1] || '';
+  } catch {
+    return '';
+  }
 }
 
 function dayLabel(iso) {
@@ -24,7 +36,11 @@ function dayLabel(iso) {
 function row(w) {
   const actions = el('div', { className: 'session-actions' });
   if (w.soldOut) actions.append(el('span', { className: 'button', textContent: 'Sold out', style: 'background: var(--muted); cursor: default' }));
-  else if (w.register) actions.append(el('a', { className: 'button', href: w.register, textContent: 'Register' }));
+  else if (w.register) {
+    const provider = providerOf(w.register);
+    actions.append(el('a', { className: 'button', href: w.register, textContent: provider === 'Stripe' ? 'Book and pay' : 'Book a place' }));
+    if (provider && provider !== 'Stripe') actions.append(el('span', { className: 'piece-meta', textContent: `Tickets through ${provider}` }));
+  }
   if (w.details) actions.append(el('a', { href: w.details, textContent: 'Event details', style: 'padding: 8px 0; font-size: 15px' }));
 
   const where = [w.venue, w.price].filter(Boolean).join(' · ');
