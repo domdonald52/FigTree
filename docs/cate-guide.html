@@ -84,7 +84,7 @@ ul.check label { min-width: 0; }
 </header>
 <p class="lede">How to add workshops and pieces for sale, what happens when something sells, and where everything lives.</p>
 <p class="meta">Updated 9 October 2026</p>
-<nav class="toc" aria-label="Contents"><a href="#how">How it works</a><a href="#sheet">The Google Sheet</a><a href="#workshop">Adding a workshop</a><a href="#listing">Listing a piece</a><a href="#sold">When something sells</a><a href="#lists">Galleries & media</a><a href="#messages">Messages & galleries</a><a href="#money">Money & tax</a><a href="#help">If something looks wrong</a></nav>
+<nav class="toc" aria-label="Contents"><a href="#how">How it works</a><a href="#sheet">The Google Sheet</a><a href="#workshop">Adding a workshop</a><a href="#humanitix">Humanitix setup</a><a href="#listing">Listing a piece</a><a href="#sold">When something sells</a><a href="#lists">Galleries & media</a><a href="#messages">Messages & galleries</a><a href="#money">Money & tax</a><a href="#help">If something looks wrong</a></nav>
 
 <section id="how">
 <h2>How the website works</h2>
@@ -149,6 +149,27 @@ ul.check label { min-width: 0; }
 <h3>Refund wording to paste into Humanitix</h3>
 <blockquote>Full refund of the ticket price if you cancel 7 or more days before the workshop. After that, refunds aren’t available, but you’re welcome to pass your place to someone else or move to a later workshop if there’s room. If Cate cancels or reschedules, you’ll get a full refund including booking fees, or a place on another date. Your rights under the Consumer Guarantees Act aren’t affected. Full terms: catepates.co.nz/terms.html</blockquote>
 <div class="callout warn"><p class="label">Privacy</p><p>Keep the venue to a public place. Never put your home address in the sheet: the website shows everything in a row marked <code>yes</code>.</p></div>
+</section>
+
+<section id="humanitix">
+<h2>Setting up a workshop in Humanitix</h2>
+<p class="lead">Humanitix keeps count of places for you, lets people book several at once, and keeps the list of who’s coming, so there’s no tally to update by hand.</p>
+<ol class="steps">
+<li><strong>Create the event:</strong> name, date and time, a public venue, a short description and a photo.</li>
+<li><strong>Tickets:</strong> one ticket called <em>Workshop place</em>. Set the <strong>quantity</strong> to the number of places (for example 10) and allow <strong>up to 4 per order</strong>. When they’re gone, sales stop by themselves.</li>
+<li><strong>Booking fee:</strong> Humanitix charges 5% + 49c per paid ticket, plus GST (about $6 on a $95 ticket). The simplest choice is to <strong>absorb the fee</strong> and set an all-inclusive price: about $101 leaves you roughly $95, and buyers see one price with no booking fee added.</li>
+<li><strong>Refunds:</strong> choose <strong>Custom</strong> and paste the refund wording above. Turn on <strong>self-service refunds</strong>: 100% of the ticket price, up to 7 days before.</li>
+<li><strong>Checkout questions:</strong> a tick box <em>I’ve read and agree to the workshop terms</em> (required, if Humanitix allows), and <em>Anything Cate should know? (allergies, access needs)</em>.</li>
+<li><strong>Publish</strong>, copy the event link, and paste it into the <strong>Booking link</strong> column of the Workshops tab.</li>
+</ol>
+<h3>While bookings come in</h3>
+<ul>
+<li>Humanitix emails you each booking. The <strong>Orders</strong> and <strong>Attendees</strong> pages show everyone, with their answers; you can print or download the list for the day.</li>
+<li>Turn on the <strong>waitlist</strong> so people can join it once it’s full.</li>
+<li>When it’s full, type <code>yes</code> under <strong>Sold out</strong> in the sheet so the website says so too.</li>
+</ul>
+<div class="callout"><p class="label">Someone who’d rather not pay online</p><p>Add their booking in Humanitix yourself as a box office / cash order (no Humanitix fee on these), and they pay you by bank transfer or cash. Their place still counts, so all bookings stay in one list. Check how this works in your Humanitix account the first time.</p></div>
+<p><strong>Private groups</strong> (birthdays, team days): agree the date and price by message; you don’t need Humanitix for those.</p>
 </section>
 
 <section id="listing">
