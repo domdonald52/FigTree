@@ -9,6 +9,10 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 - **GitHub repository:** https://github.com/domdonald52/FigTree (live site publishes from `main`; work happens on `claude/cate-pates-portfolio-l2zfyj`)
 - **Preview of work in progress (free):** https://claude-cate-pates-portfolio-l2zfyj--figtreestudionz.netlify.app
 - **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
+- **Cate's user guide:** https://claude.ai/code/artifact/529b7a76-0037-4ab1-9cb1-f321915992b3
+- **Developer guide (how everything connects):** https://claude.ai/code/artifact/561d3f59-6c7e-42d7-a63d-da6f188f3315
+- **Migration guide (moving to Cate's accounts):** https://claude.ai/code/artifact/6a3bff73-b6cf-4f32-95b6-e5814d891f53
+- **Status check:** `/status.html` on the preview or live site
 - **Cate's work at ORA Gallery:** https://oragallery.co.nz/collections/cate-pates
 - **Cate's work at The Vault:** https://www.thevaultnz.com/category/cate-pates/474.aspx
 - **Google Sheet (website content):** _to be added_ — template: `sheet-template/fig-tree-studio-website.xlsx` (Sales record kept separately: `sheet-template/fig-tree-studio-sales.xlsx`)
