@@ -23,6 +23,16 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` so ORA photos can be refreshed by hand (see below).
 3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
 
+### Potter's stamp (maker's mark): where to get it made
+
+A small stamp of the fig tree mark (or initials) for pressing into the clay, to sign each piece. Wellington City Libraries' makerspaces can make it:
+
+- **Te Whaitua Auaha, the Central Library makerspace.** Jobs are submitted through its online *Job Submission Form* (survey.alchemer.com, titled "Te Whaitua Auaha Job Submission Form").
+- **Tūhura | The HIVE, Johnsonville Library.** Email thehive@wcc.govt.nz instead of using the form.
+- **Services:** 3D printing (filament), 3D printing (resin), laser cutting. Resin printing gives the finest detail for a stamp face; laser cutting suits a flat acrylic or wood stamp.
+- **Timing:** a quote within two working days; then up to three weeks to complete once the quote is accepted.
+- **To prepare:** a clean, single-colour version of the mark (SVG or STL), mirrored so it reads correctly when pressed, sized about 15–25 mm, with a handle.
+
 ### To do with Cate
 
 - [ ] **Humanitix refund policy:** every event currently says *Refund Policy: No refunds* (a Humanitix preset that breaches NZ consumer law on its own). For the current and future events: Payments & fees → Refunds → **Custom**, paste the workshop wording from her guide, and turn on **self-service refunds** (100% of ticket price, up to 7 days before). Add a checkout tick box "I've read and agree to the workshop terms".
