@@ -27,7 +27,11 @@ export default async () => {
             if (!yes(r.show)) shown = 'hidden: Show is not yes';
             else if (!/^\d{4}-\d{2}-\d{2}$/.test(r.date || '')) shown = `hidden: can't read the date "${r.date}"`;
             else if (r.date < today) shown = 'hidden: date has passed';
-            const button = yes(r.sold_out) ? 'Sold out' : r.booking_link ? 'Book a place' : 'no booking link';
+            const link = String(r.booking_link || '').trim();
+            const button = yes(r.sold_out) ? 'Sold out'
+              : /^(none|no booking( needed)?|drop[ -]?in|just turn up)$/i.test(link) ? 'none (no booking needed)'
+              : /^https?:\/\//i.test(link) ? `Book a place (${link.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]})`
+              : 'Ask about booking (contact form)';
             return { name: r.workshop, date: r.date, shown, button };
           });
         }

@@ -112,6 +112,14 @@
 </footer>
 
 <script>document.querySelectorAll('[data-year]').forEach((n) => { n.textContent = new Date().getFullYear(); });</script>
+<script>
+// "Ask about booking" links arrive as about.html?workshop=<name, date>#contact: start the message for them.
+(function () {
+  var w = new URLSearchParams(location.search).get('workshop');
+  var box = document.querySelector('textarea[name="message"]');
+  if (w && box && !box.value) box.value = 'Hi Cate, I\'d like to book a place: ' + w.slice(0, 120) + '.\n\n';
+})();
+</script>
 <script type="module" src="/js/about.js"></script>
 </body>
 </html>

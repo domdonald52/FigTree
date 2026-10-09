@@ -28,6 +28,25 @@ export function providerOf(url) {
   }
 }
 
+// What the booking button should do, from the Sold out and Booking link columns:
+//   a ticketing site → "Book a place" + "Tickets through Humanitix"; a Stripe link → "Book and pay";
+//   any other site → "Book a place" + "Booking through <site>"; empty → "Ask about booking"
+//   (contact form, workshop pre-filled); "none" / "drop in" / "no booking" → no button.
+export function bookingOf(w) {
+  if (w.soldOut) return { kind: 'sold', label: 'Sold out' };
+  const link = String(w.register || '').trim();
+  if (/^(none|no booking( needed)?|drop[ -]?in|just turn up)$/i.test(link)) return { kind: 'none', note: 'Just turn up, no booking needed' };
+  if (/^https?:\/\//i.test(link)) {
+    const provider = providerOf(link);
+    if (provider === 'Stripe') return { kind: 'link', href: link, label: 'Book and pay' };
+    let site = provider;
+    if (!site) { try { site = new URL(link).hostname.replace(/^www\./, ''); } catch { site = ''; } }
+    return { kind: 'link', href: link, label: 'Book a place', note: site ? `${provider ? 'Tickets' : 'Booking'} through ${site}` : '' };
+  }
+  const about = [w.name, w.date ? dayLabel(w.date) : ''].filter(Boolean).join(', ');
+  return { kind: 'ask', href: `/about.html?workshop=${encodeURIComponent(about)}#contact`, label: 'Ask about booking' };
+}
+
 export function dayLabel(iso) {
   const d = new Date(`${iso}T12:00:00`);
   return d.toLocaleDateString('en-NZ', { weekday: 'short', day: 'numeric', month: 'long' });
@@ -35,12 +54,10 @@ export function dayLabel(iso) {
 
 function row(w) {
   const actions = el('div', { className: 'session-actions' });
-  if (w.soldOut) actions.append(el('span', { className: 'button', textContent: 'Sold out', style: 'background: var(--muted); cursor: default' }));
-  else if (w.register) {
-    const provider = providerOf(w.register);
-    actions.append(el('a', { className: 'button', href: w.register, textContent: provider === 'Stripe' ? 'Book and pay' : 'Book a place' }));
-    if (provider && provider !== 'Stripe') actions.append(el('span', { className: 'piece-meta', textContent: `Tickets through ${provider}` }));
-  }
+  const b = bookingOf(w);
+  if (b.kind === 'sold') actions.append(el('span', { className: 'button is-disabled', textContent: b.label }));
+  else if (b.kind !== 'none') actions.append(el('a', { className: 'button', href: b.href, textContent: b.label }));
+  if (b.note) actions.append(el('span', { className: 'piece-meta', textContent: b.note }));
   if (w.details) actions.append(el('a', { href: w.details, textContent: 'Event details', style: 'padding: 8px 0; font-size: 15px' }));
 
   const where = [w.venue, w.price].filter(Boolean).join(' · ');
