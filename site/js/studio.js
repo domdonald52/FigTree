@@ -88,6 +88,14 @@ async function init() {
   pieces.sort((a, b) => isSold(a) - isSold(b));
   section.querySelector('[data-studio-grid]').replaceChildren(...pieces.map((p) => card(p, isSold(p))));
   section.hidden = false;
+  jumpToHash();
+}
+
+// Sections above appear after loading, so re-do a jump to #studio, #ora, #vault or #past.
+export function jumpToHash() {
+  const id = location.hash.slice(1);
+  const target = /^[a-z]+$/.test(id) && document.getElementById(id);
+  if (target) target.scrollIntoView();
 }
 
 init();

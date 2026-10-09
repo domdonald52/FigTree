@@ -144,6 +144,9 @@ async function initVault() {
   }
   section.querySelector('[data-vault-grid]').replaceChildren(...pieces.map((p) => card(p, 'Buy at The Vault →')));
   section.hidden = pieces.length === 0;
+  const id = location.hash.slice(1);
+  const target = /^[a-z]+$/.test(id) && document.getElementById(id);
+  if (target) target.scrollIntoView(); // sections above may have just appeared
 }
 
 init();

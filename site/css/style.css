@@ -136,6 +136,7 @@ blockquote.pull .attribution { font-size: 13px; letter-spacing: .14em; text-tran
 .invite { display: flex; flex-wrap: wrap; align-items: center; gap: 48px 72px; border-top: 1px solid var(--line); padding-top: 72px; }
 .invite-text { flex: 1 1 340px; min-width: 0; gap: 22px; }
 .invite-text .button { align-self: flex-start; margin-top: 8px; }
+.invite-text .text-link { margin-top: 4px; }
 .invite-collage { flex: 1.5 1 480px; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; padding-bottom: 48px; text-decoration: none; }
 .invite-collage img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--soft); transition: opacity .3s ease, transform .4s ease; }
 .invite-collage img:nth-child(2) { transform: translateY(48px); }
@@ -159,7 +160,9 @@ blockquote.pull .attribution { font-size: 13px; letter-spacing: .14em; text-tran
 .hero-figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--soft); }
 .hero-figure figcaption { text-align: center; }
 .where-to-buy { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-.where-to-buy li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.where-to-buy li { border-top: 1px solid var(--line); font-size: 15px; }
+.where-to-buy a { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; padding: 12px 0; text-decoration: none; color: var(--ink); }
+.where-to-buy a:hover strong, .where-to-buy a:hover span { color: var(--green); }
 .where-to-buy li:last-child { border-bottom: 1px solid var(--line); }
 .where-to-buy span { color: var(--muted); }
 .next-workshop { align-items: center; }
