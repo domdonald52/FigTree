@@ -18,6 +18,7 @@
 <script type="module">
 const box = document.querySelector('[data-status]');
 const tick = (ok) => (ok ? '✅' : '❌');
+const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 try {
   const s = await (await fetch('/api/status', { cache: 'no-store' })).json();
   const rows = [];
@@ -26,7 +27,7 @@ try {
     rows.push(`<p>${tick(false)} Not connected. Add <code>SHEET_ID</code> in Netlify → Environment variables, then retry this branch's deploy.</p>`);
   } else {
     rows.push('<ul>' + Object.entries(s.sheet.tabs).map(([tab, t]) => t.ok
-      ? `<li>${tick(true)} <strong>${tab}</strong>: ${t.rows} row${t.rows === 1 ? '' : 's'}${tab === 'Studio' ? ` (${t.withPaymentLink} with a Stripe payment link)` : ''}</li>`
+      ? `<li>${tick(true)} <strong>${tab}</strong>: ${t.rows} row${t.rows === 1 ? '' : 's'}${tab === 'Studio' ? ` (${t.withPaymentLink} with a Stripe payment link)` : ''}${t.workshops && t.workshops.length ? '<ul>' + t.workshops.map((w) => `<li>${w.shown.startsWith('shown') ? '✅' : '⚠️'} ${esc(w.name)} (${esc(w.date)}): ${esc(w.shown)} · button: ${esc(w.button)}</li>`).join('') + '</ul>' : ''}</li>`
       : `<li>${tick(false)} <strong>${tab}</strong>: ${t.error}</li>`).join('') + '</ul>');
   }
   rows.push(`<h2 class="h3">Stripe</h2><ul>`);

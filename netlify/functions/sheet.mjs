@@ -19,6 +19,24 @@ export function keyOf(label) {
 }
 
 const pad = (n) => String(n).padStart(2, '0');
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+// Dates typed as text rather than entered as dates, read the NZ way (day first):
+// "24/10/2026", "24-10-26", "24 Oct 2026", "Sat 24 October 2026" → "2026-10-24".
+export function textDate(v) {
+  let m = v.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2}|\d{4})$/);
+  if (m) {
+    const y = m[3].length === 2 ? `20${m[3]}` : m[3];
+    if (Number(m[2]) >= 1 && Number(m[2]) <= 12 && Number(m[1]) >= 1 && Number(m[1]) <= 31) return `${y}-${pad(m[2])}-${pad(m[1])}`;
+  }
+  m = v.match(/^(?:[a-z]+,?\s+)?(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\.?,?\s+(\d{4})$/i);
+  if (m) {
+    const mi = MONTHS.indexOf(m[2].slice(0, 3).toLowerCase());
+    if (mi >= 0) return `${m[3]}-${pad(mi + 1)}-${pad(m[1])}`;
+  }
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(v)) { const [y, mo, d] = v.split('-'); return `${y}-${pad(mo)}-${pad(d)}`; }
+  return null;
+}
 
 export function cellValue(cell) {
   if (!cell || cell.v === null || cell.v === undefined) return '';
@@ -26,9 +44,10 @@ export function cellValue(cell) {
   if (typeof v === 'string') {
     const d = v.match(/^Date\((\d+),(\d+),(\d+)/); // gviz date: month is 0-based
     if (d) return `${d[1]}-${pad(Number(d[2]) + 1)}-${pad(d[3])}`;
-    const my = v.trim().match(/^(\d{1,2})\/(\d{4})$/); // "09/2026"
+    const t = v.trim();
+    const my = t.match(/^(\d{1,2})\/(\d{4})$/); // "09/2026"
     if (my) return `${my[2]}-${pad(my[1])}`;
-    return v.trim();
+    return textDate(t) ?? t;
   }
   if (typeof v === 'boolean') return v ? 'yes' : 'no';
   // numbers: use the sheet's own formatting when there is one (e.g. "$95"), else the number

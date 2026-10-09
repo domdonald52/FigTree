@@ -18,6 +18,19 @@ export default async () => {
         if (!res.ok) throw new Error(`HTTP ${res.status} (is the sheet shared as "Anyone with the link"?)`);
         const rows = parseGviz(await res.text());
         const info = { ok: true, rows: rows.length };
+        if (tab === 'Workshops') {
+          // Why each workshop is or isn't on the Workshops page (same rules as site/js/workshops.js).
+          const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' });
+          const yes = (v) => ['yes', 'y', 'true', '1'].includes(String(v || '').trim().toLowerCase());
+          info.workshops = rows.filter((r) => r.workshop).map((r) => {
+            let shown = 'shown';
+            if (!yes(r.show)) shown = 'hidden: Show is not yes';
+            else if (!/^\d{4}-\d{2}-\d{2}$/.test(r.date || '')) shown = `hidden: can't read the date "${r.date}"`;
+            else if (r.date < today) shown = 'hidden: date has passed';
+            const button = yes(r.sold_out) ? 'Sold out' : r.booking_link ? 'Book a place' : 'no booking link';
+            return { name: r.workshop, date: r.date, shown, button };
+          });
+        }
         if (tab === 'Studio') info.withPaymentLink = rows.filter((r) => /^https:\/\/buy\.stripe\.com\//.test(r.payment_link || '')).length;
         sheet.tabs[tab] = info;
       } catch (err) {
