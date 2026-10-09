@@ -163,7 +163,7 @@ blockquote.pull .attribution { font-size: 13px; letter-spacing: .14em; text-tran
 .where-to-buy li:last-child { border-bottom: 1px solid var(--line); }
 .where-to-buy span { color: var(--muted); }
 .next-workshop { align-items: center; }
-.next-workshop > img { flex: 0 1 300px; width: 100%; max-width: 340px; aspect-ratio: 327 / 402; object-fit: cover; min-width: 0; }
+.next-workshop > img { flex: 1 1 420px; width: 100%; max-width: 520px; aspect-ratio: 1 / 1; object-fit: cover; min-width: 0; }
 .nw-when { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 500; }
 .button.is-disabled { background: var(--muted); cursor: default; }
 @media (max-width: 700px) {
