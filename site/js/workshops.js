@@ -28,7 +28,7 @@ export function providerOf(url) {
   }
 }
 
-function dayLabel(iso) {
+export function dayLabel(iso) {
   const d = new Date(`${iso}T12:00:00`);
   return d.toLocaleDateString('en-NZ', { weekday: 'short', day: 'numeric', month: 'long' });
 }
@@ -64,11 +64,8 @@ function row(w) {
   );
 }
 
-async function init() {
-  const list = document.querySelector('[data-workshops]');
-  if (!list) return;
-  const empty = document.querySelector('[data-workshops-empty]');
-
+// Upcoming, visible workshops (from the sheet, or data/workshops.json), soonest first.
+export async function loadUpcoming() {
   let workshops = [];
   const rows = await sheetRows('Workshops');
   if (rows) {
@@ -80,15 +77,20 @@ async function init() {
     try {
       workshops = await (await fetch('/data/workshops.json')).json();
     } catch {
-      // show the empty message
+      // nothing to show
     }
   }
-
-  const today = new Date().toISOString().slice(0, 10);
-  const upcoming = workshops
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' });
+  return workshops
     .filter((w) => !w.draft && w.name && /^\d{4}-\d{2}-\d{2}$/.test(w.date || '') && w.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date));
+}
 
+async function init() {
+  const list = document.querySelector('[data-workshops]');
+  if (!list) return;
+  const empty = document.querySelector('[data-workshops-empty]');
+  const upcoming = await loadUpcoming();
   list.replaceChildren(...upcoming.map(row));
   list.hidden = upcoming.length === 0;
   if (empty) empty.hidden = upcoming.length > 0;

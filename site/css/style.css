@@ -146,3 +146,34 @@ blockquote.pull .attribution { font-size: 13px; letter-spacing: .14em; text-tran
   .invite-collage img:nth-child(2) { transform: translateY(28px); }
   .invite-text .button { align-self: stretch; }
 }
+
+/* ---------- Homepage: hero, where to buy, next workshop ---------- */
+.hero { padding-top: 48px; }
+.hero-text { flex: 1.2 1 380px; min-width: 0; gap: 22px; }
+.hero-title { font-size: clamp(40px, 5vw, 66px); line-height: 1.05; text-wrap: balance; }
+.hero-quote { margin: 4px 0 0; padding-left: 20px; border-left: 1px solid var(--line); }
+.hero-quote p { margin: 0; font-family: var(--serif); font-style: italic; font-size: clamp(20px, 2vw, 24px); line-height: 1.4; color: var(--body); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 6px; }
+.hero-actions .text-link { padding-top: 6px; }
+.hero-figure { flex: 1 1 380px; max-width: 520px; min-width: 0; margin: 0 auto; gap: 12px; }
+.hero-figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--soft); }
+.hero-figure figcaption { text-align: center; }
+.where-to-buy { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.where-to-buy li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.where-to-buy li:last-child { border-bottom: 1px solid var(--line); }
+.where-to-buy span { color: var(--muted); }
+.next-workshop { align-items: center; }
+.next-workshop > img { flex: 0 1 300px; width: 100%; max-width: 340px; aspect-ratio: 327 / 402; object-fit: cover; min-width: 0; }
+.nw-when { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 500; }
+.button.is-disabled { background: var(--muted); cursor: default; }
+@media (max-width: 700px) {
+  .hero { padding-top: 24px; }
+  .hero .split { gap: 28px; }
+  .hero-figure { order: -1; max-width: none; }
+  .hero-figure img { aspect-ratio: 1 / 1; }
+}
+@media (max-width: 600px) {
+  .nav { gap: 0 18px; font-size: 12.5px; letter-spacing: .08em; }
+  .nav a[href="/about.html#contact"], .nav a[href="#contact"] { display: none; }
+  .hero-actions .button { flex: 1 1 100%; }
+}
