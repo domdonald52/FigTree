@@ -5,7 +5,7 @@
 // ORA's shop once more: anything sold since the last build disappears, price changes
 // show, and pieces listed since the last build are added straight away using ORA's own
 // photo (they get a trimmed photo at the next build). If ORA can't be reached, the
-// built list is shown as it is.
+// built list is shown as it is. The Vault works the same way through /api/vault.
 //
 // Markup:
 //   <section data-ora>
@@ -131,22 +131,49 @@ async function init() {
   await liveCheck(sections, pieces.map((p) => p.handle));
 }
 
-// Pieces at The Vault, prepared at build time by scripts/fetch-vault.mjs. The Vault's shop
-// can't be checked live from the browser, so this list is as of the last build.
+// Pieces at The Vault, prepared at build time by scripts/fetch-vault.mjs. The Vault has no
+// feed the browser can read, so after drawing the built list this asks /api/vault (re-read
+// from The Vault at most hourly): sold pieces drop off, prices update and new pieces appear
+// with The Vault's own photo until the next build. If the check fails, or reads nothing
+// (perhaps The Vault changed its pages), the built list stays as it is.
 async function initVault() {
   const section = document.querySelector('[data-vault]');
   if (!section) return;
+  const grid = section.querySelector('[data-vault-grid]');
   let pieces = [];
   try {
     ({ pieces } = await (await fetch('/data/vault.json')).json());
   } catch {
-    // leave the section hidden
+    // start empty; the live check may still find pieces
   }
-  section.querySelector('[data-vault-grid]').replaceChildren(...pieces.map((p) => card(p, 'Buy at The Vault →')));
-  section.hidden = pieces.length === 0;
+  const draw = (list) => {
+    grid.replaceChildren(...list.map((p) => card(p, 'Buy at The Vault →')));
+    section.hidden = list.length === 0;
+  };
+  draw(pieces);
+  jumpToHash();
+
+  let live;
+  try {
+    const res = await fetch('/api/vault');
+    if (!res.ok) return;
+    live = await res.json();
+  } catch {
+    return;
+  }
+  if (!live.found) return;
+  const built = new Map(pieces.map((p) => [p.handle, p]));
+  draw(live.pieces.map((p) => (built.has(p.handle)
+    ? { ...built.get(p.handle), price: p.price }
+    : { ...p, size: '', image: p.photo, alt: `${p.title} by Cate Pates` })));
+  jumpToHash();
+}
+
+// Sections above may have just appeared, so scroll to #vault, #ora etc. again.
+function jumpToHash() {
   const id = location.hash.slice(1);
   const target = /^[a-z]+$/.test(id) && document.getElementById(id);
-  if (target) target.scrollIntoView(); // sections above may have just appeared
+  if (target) target.scrollIntoView();
 }
 
 init();

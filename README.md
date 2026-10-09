@@ -97,7 +97,7 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 
 ## Pieces at The Vault
 
-`scripts/fetch-vault.mjs` does the same job for The Vault (2 Plimmer Steps, Wellington) on every build: it reads Cate's artist page on thevaultnz.com and each product page, frames the photos the same way (shared code in `scripts/frame-photo.mjs`) and writes `site/data/vault.json` and `site/vault/`. The Vault's shop has no data feed and can't be checked from the browser, so unlike ORA the Vault list is as of the last build: sold pieces drop off, and new ones appear, at the next deploy. If the page can't be read, the previous list is kept.
+`scripts/fetch-vault.mjs` does the same job for The Vault (2 Plimmer Steps, Wellington) on every build: it reads Cate's artist page on thevaultnz.com and each product page, frames the photos the same way (shared code in `scripts/frame-photo.mjs`) and writes `site/data/vault.json` and `site/vault/`. The Vault's shop has no data feed the browser can read, so the Gallery page also asks `/api/vault` (`netlify/functions/vault.mjs`), which reads the artist page live. Netlify's CDN caches that for an hour for all visitors, so The Vault is read about once an hour: sold pieces drop off and new pieces appear (with The Vault's own photo until the next build). The page parsing lives in `scripts/vault-parse.mjs`, shared by the build and the function; if The Vault changes its layout, fix it there. If the page can't be read, the built list is kept and `/status.html` shows a warning.
 
 ## Selling from the studio (Stripe payment links)
 

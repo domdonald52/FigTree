@@ -12,7 +12,7 @@
 <body>
 <main class="wrap section" style="max-width: 760px">
   <h1 class="h2">Website status</h1>
-  <p class="lede" style="max-width: none; margin: 8px 0 32px">Checks the connection to the Google Sheet and Stripe. Refresh to check again.</p>
+  <p class="lede" style="max-width: none; margin: 8px 0 32px">Checks the connection to the Google Sheet, Stripe and The Vault. Refresh to check again.</p>
   <div class="terms" data-status><p>Checking…</p></div>
 </main>
 <script type="module">
@@ -34,6 +34,22 @@ try {
   rows.push(`<li>${tick(s.stripe.webhookSecretSet)} Webhook signing secret ${s.stripe.webhookSecretSet ? 'is set' : 'is not set (add <code>STRIPE_WEBHOOK_SECRET</code> in Netlify)'}</li>`);
   const sold = s.stripe.soldPieces;
   rows.push(`<li>Pieces Stripe has reported as sold: ${Array.isArray(sold) ? (sold.length ? sold.join(', ') : 'none yet') : sold}</li></ul>`);
+  const v = s.vault || {};
+  rows.push(`<h2 class="h3">The Vault</h2><ul>`);
+  if (!v.ok) {
+    rows.push(`<li>${tick(false)} Couldn't reach The Vault's website (${esc(v.error)}). The Gallery page keeps showing the list from the last build.</li>`);
+  } else if (v.listed === 0) {
+    rows.push(`<li>⚠️ The Vault's page loaded but no pieces could be read. Either nothing of Cate's is listed there, or The Vault has changed its page layout and <code>scripts/vault-parse.mjs</code> needs updating. Until then the Gallery page shows the list from the last build.</li>`);
+  } else {
+    rows.push(`<li>${tick(true)} The Vault's page can be read: ${v.listed} piece${v.listed === 1 ? '' : 's'} listed now.</li>`);
+  }
+  if (v.builtAt) {
+    rows.push(`<li>Last build (${esc(new Date(v.builtAt).toLocaleString('en-NZ'))}) had ${v.built} piece${v.built === 1 ? '' : 's'}.`
+      + (v.goneSinceBuild?.length ? ` Gone since (sold or removed, hidden on the site within the hour): ${v.goneSinceBuild.map(esc).join(', ')}.` : '')
+      + (v.newSinceBuild?.length ? ` New since (shown with The Vault's own photo until the next build): ${v.newSinceBuild.map(esc).join(', ')}.` : '')
+      + '</li>');
+  }
+  rows.push('</ul>');
   box.innerHTML = rows.join('');
 } catch {
   box.innerHTML = '<p>❌ The status check itself isn\'t available. It only works on the Netlify site, not when the pages are opened as files.</p>';

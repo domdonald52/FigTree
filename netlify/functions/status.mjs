@@ -4,10 +4,11 @@
 
 import { getStore } from '@netlify/blobs';
 import { parseGviz } from './sheet.mjs';
+import { ARTIST_PAGE, fetchText, listPieces } from '../../scripts/vault-parse.mjs';
 
 const TABS = ['Workshops', 'Studio', 'Galleries', 'Exhibitions', 'Media'];
 
-export default async () => {
+export default async (req) => {
   const sheetId = process.env.SHEET_ID || '';
   const sheet = { configured: Boolean(sheetId), tabs: {} };
   if (sheetId) {
@@ -50,8 +51,30 @@ export default async () => {
     sold = `unavailable (${err.message})`;
   }
 
+  // The Vault: can its page still be read, and how does it compare with the last build?
+  const vault = {};
+  try {
+    const live = listPieces(await fetchText(ARTIST_PAGE));
+    vault.ok = true;
+    vault.listed = live.length;
+    try {
+      const built = await (await fetch(new URL('/data/vault.json', req.url))).json();
+      const builtHandles = new Set(built.pieces.map((p) => p.handle));
+      const liveHandles = new Set(live.map((p) => p.handle));
+      vault.builtAt = built.updated;
+      vault.built = built.pieces.length;
+      vault.goneSinceBuild = built.pieces.filter((p) => !liveHandles.has(p.handle)).map((p) => p.title);
+      vault.newSinceBuild = live.filter((p) => !builtHandles.has(p.handle)).map((p) => p.title);
+    } catch {
+      // the built list is optional here
+    }
+  } catch (err) {
+    vault.ok = false;
+    vault.error = err.message;
+  }
+
   return Response.json(
-    { sheet, stripe: { webhookSecretSet: Boolean(process.env.STRIPE_WEBHOOK_SECRET), soldPieces: sold } },
+    { sheet, vault, stripe: { webhookSecretSet: Boolean(process.env.STRIPE_WEBHOOK_SECRET), soldPieces: sold } },
     { headers: { 'Cache-Control': 'no-store' } },
   );
 };
