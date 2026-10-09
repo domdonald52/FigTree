@@ -1,0 +1,12 @@
+Stamp STL check
+
+PASS  Closed, solid shape (watertight)     no holes in the surface
+PASS  Faces point the right way            volume 3640 mm³
+PASS  One piece                            1 body
+PASS  No broken triangles                  7000 triangles
+PASS  Size                                 22.0 × 22.0 × 21.0 mm (disc 22 mm, total height 21.0 mm)
+PASS  Design size                          19.2 × 19.2 mm, raised 1.5 mm
+PASS  No line thinner than 0.7 mm          thinnest lines are 0.8 mm (resin printers manage about 0.2 mm)
+PASS  No gap narrower than 0.5 mm          gaps stay open in the clay
+PASS  Design reads backwards on the stamp  mirrored, so the impression reads C P
+PASS  Flat top on the handle               stands on the knob with the design facing up: no supports touch the design

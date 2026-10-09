@@ -1,5 +1,5 @@
 # Builds a printable stamp: base disc + mirrored raised design + handle. Units: mm.
-import re, numpy as np
+import os, re, numpy as np
 from svgpathtools import parse_path
 from shapely.geometry import Polygon, Point, LineString
 from shapely.ops import unary_union
@@ -19,7 +19,7 @@ def pts(d, n=400):
 shapes = []
 for d in re.findall(r'<path d="([^"]+)"', stroke_part):
     shapes.append(LineString(pts(d)).buffer(4, quad_segs=16))            # 0.8 mm line
-shapes.append(Point(100, 100).buffer(95.5).difference(Point(100, 100).buffer(88.5)))  # ring
+shapes.append(Point(100, 100).buffer(96).difference(Point(100, 100).buffer(88)))  # ring
 for d in re.findall(r'<path d="([^"]+)"', fill_part):
     shapes.append(Polygon(pts(d)).buffer(0))
 art = unary_union(shapes)
@@ -42,10 +42,12 @@ relief = to_cs(art).extrude(RELIEF).translate((0, 0, BASE_T))
 base = m3.Manifold.cylinder(BASE_T, BASE_R, BASE_R, 128)
 handle = m3.Manifold.cylinder(14, 5.5, 7.5, 96).translate((0, 0, -14))   # tapered knob, wider at top
 knob = m3.Manifold.sphere(7.5, 96).scale((1, 1, 0.45)).translate((0, 0, -14))
+# Flat top on the knob (about 10 mm across) so the stamp stands on it, design facing up
+knob = knob.trim_by_plane((0, 0, 1), -16.5)
 stamp = base + relief + handle + knob
 mesh = stamp.to_mesh()
 import trimesh
 t = trimesh.Trimesh(mesh.vert_properties[:, :3], mesh.tri_verts)
 print('watertight', t.is_watertight, 'bounds', t.bounds.round(2).tolist(), 'tris', len(t.faces))
-t.export('/home/user/FigTree/stamp/stamp-20mm.stl')
+t.export(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'stamp-20mm.stl'))
 # preview render of the stamp face
