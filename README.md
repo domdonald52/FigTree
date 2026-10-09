@@ -5,7 +5,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 ## Quick links
 
 - **Netlify project:** https://app.netlify.com/projects/figtreestudionz/overview
-- **Live site:** https://figtreestudionz.netlify.app
+- **Live site:** https://catepates.co.nz (also https://figtreestudionz.netlify.app)
 - **GitHub repository:** https://github.com/domdonald52/FigTree (live site publishes from `main`; work happens on `claude/cate-pates-portfolio-l2zfyj`)
 - **Preview of work in progress (free):** https://claude-cate-pates-portfolio-l2zfyj--figtreestudionz.netlify.app
 - **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
@@ -18,6 +18,14 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**, **Media**, **Studio**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
 2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` so ORA photos can be refreshed by hand (see below).
 3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
+
+### To do with Cate
+
+- [ ] **Humanitix refund policy:** every event currently says *Refund Policy: No refunds* (a Humanitix preset that breaches NZ consumer law on its own). For the current and future events: Payments & fees → Refunds → **Custom**, paste the workshop wording from her guide, and turn on **self-service refunds** (100% of ticket price, up to 7 days before). Add a checkout tick box "I've read and agree to the workshop terms".
+- [ ] Find any other "no refunds" wording (Instagram/Facebook posts, the Google Form she's contacted through) and replace it with a link to `/terms.html`.
+- [ ] Ask people with refund requests to use the website contact form rather than private messages.
+- [ ] Cate to check the decisions in the terms: not GST-registered, pieces decorative only, 7-day workshop window, 5-day posting, 50% commission deposit, photos at workshops, under-16s with an adult.
+- [ ] Have the terms looked over (business.govt.nz guidance or a local lawyer) before launch.
 
 The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instrument Sans, fig tree mark). Pages live in `site/`:
 
