@@ -3,7 +3,10 @@
 // Each item: { "date": "2026-09" (or "2026-09-14"), "type": "Podcast", "title": "…",
 //              "outlet": "…", "blurb": "…", "link": "https://…", "draft": false }
 // Items marked "draft": true are not shown. When nothing is left, the empty message appears.
-// (Later this can read the Media tab of Cate's Google Sheet instead of the JSON file.)
+// Rows come from the Media tab of Cate's Google Sheet when it's connected (see sheet.js),
+// otherwise from data/media.json.
+
+import { sheetRows, isYes } from './sheet.js';
 
 const ACTION = { podcast: 'Listen', radio: 'Listen', video: 'Watch' };
 
@@ -14,6 +17,7 @@ function el(tag, props = {}, ...children) {
 }
 
 function monthLabel(iso) {
+  if (!/^\d{4}(-\d{2}){0,2}$/.test(iso || '')) return iso || '';
   const [y, m = '01', d = '15'] = iso.split('-');
   return new Date(`${y}-${m}-${d}T12:00:00`).toLocaleDateString('en-NZ', { month: 'long', year: 'numeric' });
 }
@@ -46,13 +50,20 @@ async function init() {
   const empty = document.querySelector('[data-media-empty]');
 
   let items = [];
-  try {
-    items = await (await fetch('/data/media.json')).json();
-  } catch {
-    // show the empty message
+  const rows = await sheetRows('Media');
+  if (rows) {
+    items = rows.map((r) => ({
+      date: r.date, type: r.type, title: r.title, outlet: r.where, blurb: r.description, link: r.link, draft: !isYes(r.show),
+    }));
+  } else {
+    try {
+      items = await (await fetch('/data/media.json')).json();
+    } catch {
+      // show the empty message
+    }
   }
 
-  const shown = items.filter((i) => !i.draft && i.title).sort((a, b) => b.date.localeCompare(a.date));
+  const shown = items.filter((i) => !i.draft && i.title).sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
   list.replaceChildren(...shown.map(row));
   list.hidden = shown.length === 0;
   if (empty) empty.hidden = shown.length > 0;

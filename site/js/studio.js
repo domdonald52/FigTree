@@ -1,12 +1,15 @@
 // Pieces Cate sells herself, through Stripe payment links.
 //
-// Each piece in data/studio.json (later the Studio tab of the Google Sheet):
+// Rows come from the Studio tab of Cate's Google Sheet when it's connected (see sheet.js),
+// otherwise from data/studio.json:
 //   { "key": "fox-house", "title": "…", "price": "$320", "size": "…", "photo": "/img/…" or "https://…",
 //     "link": "https://buy.stripe.com/…", "sold": false, "draft": false }
 // "key" is optional (made from the title) and must stay the same once a piece is listed.
 // The Buy button adds client_reference_id=<key> to the payment link, so when Stripe reports
 // the sale (netlify/functions/stripe-webhook.mjs) the piece is marked sold automatically.
 // Cate can also type sold = yes in the sheet. A piece with no link shows "Enquire" instead.
+
+import { sheetRows, isYes, photoUrl } from './sheet.js';
 
 function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
@@ -63,16 +66,24 @@ async function init() {
   const section = document.querySelector('[data-studio]');
   if (!section) return;
   let pieces = [];
-  try {
-    pieces = await (await fetch('/data/studio.json')).json();
-  } catch {
-    // leave the section hidden
+  const rows = await sheetRows('Studio');
+  if (rows) {
+    pieces = rows.map((r) => ({
+      key: r.code, title: r.title, price: r.price, size: r.size, photo: photoUrl(r.photo_link),
+      link: r.payment_link, sold: isYes(r.sold), draft: !isYes(r.show),
+    }));
+  } else {
+    try {
+      pieces = await (await fetch('/data/studio.json')).json();
+    } catch {
+      // leave the section hidden
+    }
   }
   pieces = pieces.filter((p) => p.title && p.photo && !p.draft);
   if (!pieces.length) return;
 
   const sold = await soldKeys();
-  const isSold = (p) => p.sold === true || String(p.sold).toLowerCase() === 'yes' || sold.has(keyOf(p));
+  const isSold = (p) => p.sold === true || isYes(p.sold) || sold.has(keyOf(p));
   // Available pieces first, sold ones after.
   pieces.sort((a, b) => isSold(a) - isSold(b));
   section.querySelector('[data-studio-grid]').replaceChildren(...pieces.map((p) => card(p, isSold(p))));

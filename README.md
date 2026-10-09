@@ -11,7 +11,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 - **Design canvas (Nature vs Gallery designs, logo concepts):** https://claude.ai/artifact/QSTbKPhT6K89ykfqq2f36x
 - **Cate's work at ORA Gallery:** https://oragallery.co.nz/collections/cate-pates
 - **Cate's work at The Vault:** https://www.thevaultnz.com/category/cate-pates/474.aspx
-- **Google Sheet for workshops / galleries / exhibitions:** _to be added_
+- **Google Sheet (website content):** _to be added_ — template: `sheet-template/fig-tree-studio-website.xlsx` (Sales record kept separately: `sheet-template/fig-tree-studio-sales.xlsx`)
 
 ## Next steps
 
@@ -30,6 +30,15 @@ The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instru
 | About + contact form | `site/about.html` (form handled by Netlify Forms; thank-you page `site/thanks.html`) |
 
 Shared styles are in `site/css/style.css`. The site is kept out of search engines until launch (`site/robots.txt` and the header in `netlify.toml`) — remove both to go public.
+
+## The Google Sheet
+
+Workshops, studio pieces, galleries, exhibitions and media come from one Google Sheet with tabs **Workshops**, **Studio**, **Galleries**, **Exhibitions** and **Media**. The column layout (with sample rows) is in `sheet-template/fig-tree-studio-website.xlsx`, and explained for Cate in her user guide.
+
+- The sheet must be shared as *Anyone with the link → Viewer*. Set its id (the long part of its address between `/d/` and `/edit`) as the `SHEET_ID` environment variable in Netlify (scope: Functions), then redeploy.
+- `netlify/functions/sheet.mjs` serves each tab as JSON at `/api/sheet?tab=<Tab>`; Netlify's CDN caches it for 5 minutes, so edits show within about 5 minutes with no rebuild. Only those five tabs can be read.
+- The pages (`site/js/sheet.js` and the page scripts) fall back to `site/data/*.json` and the lists written into the HTML if the sheet isn't set up or can't be reached.
+- **Sales** (buyers' names and emails) must never go in this sheet, because it's readable by anyone with the link. Keep it in the separate private sales sheet.
 
 ## Workshops
 

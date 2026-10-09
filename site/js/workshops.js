@@ -5,7 +5,10 @@
 //                  "draft": false }
 // Workshops whose date has passed, or marked "draft": true, are not shown. When none are
 // left, the "New dates coming soon" message appears instead.
-// (Later this can read Cate's Google Sheet instead of the JSON file.)
+// Rows come from the Workshops tab of Cate's Google Sheet when it's connected (see sheet.js),
+// otherwise from data/workshops.json. "soldOut": true shows "Sold out" instead of Register.
+
+import { sheetRows, isYes } from './sheet.js';
 
 function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
@@ -20,7 +23,8 @@ function dayLabel(iso) {
 
 function row(w) {
   const actions = el('div', { className: 'session-actions' });
-  if (w.register) actions.append(el('a', { className: 'button', href: w.register, textContent: 'Register' }));
+  if (w.soldOut) actions.append(el('span', { className: 'button', textContent: 'Sold out', style: 'background: var(--muted); cursor: default' }));
+  else if (w.register) actions.append(el('a', { className: 'button', href: w.register, textContent: 'Register' }));
   if (w.details) actions.append(el('a', { href: w.details, textContent: 'Event details', style: 'padding: 8px 0; font-size: 15px' }));
 
   const where = [w.venue, w.price].filter(Boolean).join(' · ');
@@ -31,7 +35,7 @@ function row(w) {
       'div',
       { className: 'session-when' },
       el('span', { className: 'session-day', textContent: dayLabel(w.date) }),
-      el('span', { className: 'piece-meta', textContent: [w.time, '2½ hours'].filter(Boolean).join(' · ') }),
+      el('span', { className: 'piece-meta', textContent: w.time || '' }),
     ),
     el(
       'div',
@@ -50,15 +54,23 @@ async function init() {
   const empty = document.querySelector('[data-workshops-empty]');
 
   let workshops = [];
-  try {
-    workshops = await (await fetch('/data/workshops.json')).json();
-  } catch {
-    // show the empty message
+  const rows = await sheetRows('Workshops');
+  if (rows) {
+    workshops = rows.map((r) => ({
+      date: r.date, time: r.time, name: r.workshop, venue: r.venue, price: r.price, blurb: r.description,
+      register: r.booking_link, details: r.more_info_link, soldOut: isYes(r.sold_out), draft: !isYes(r.show),
+    }));
+  } else {
+    try {
+      workshops = await (await fetch('/data/workshops.json')).json();
+    } catch {
+      // show the empty message
+    }
   }
 
   const today = new Date().toISOString().slice(0, 10);
   const upcoming = workshops
-    .filter((w) => !w.draft && w.date >= today)
+    .filter((w) => !w.draft && w.name && /^\d{4}-\d{2}-\d{2}$/.test(w.date || '') && w.date >= today)
     .sort((a, b) => a.date.localeCompare(b.date));
 
   list.replaceChildren(...upcoming.map(row));

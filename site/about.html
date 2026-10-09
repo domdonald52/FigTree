@@ -51,13 +51,13 @@
       <div class="stack" style="flex: 1 1 460px; gap: 48px">
         <p class="quote">“I like to include aspects of nature, and use my own poetry and drawing to invoke feeling and depth.”</p>
         <div class="split" style="gap: 48px; align-items: flex-start">
-          <div class="list" style="flex: 1 1 240px">
+          <div class="list" style="flex: 1 1 240px" data-galleries>
             <h2 class="h3" style="margin-bottom: 12px">Galleries</h2>
             <div class="list-item"><strong>ORA Gallery</strong><span class="muted">23 Allen Street, Wellington</span></div>
             <div class="list-item"><strong>The Vault</strong><span class="muted">2 Plimmer Steps, Wellington</span></div>
             <div class="list-item"><strong>Wellington Artspace</strong><span class="muted">Petone</span></div>
           </div>
-          <div class="list" style="flex: 1 1 240px">
+          <div class="list" style="flex: 1 1 240px" data-exhibitions>
             <h2 class="h3" style="margin-bottom: 12px">Exhibitions</h2>
             <div class="list-item row"><span class="muted" style="flex: 0 0 48px">2026</span><span>Lower Hutt Art Trail — Wellington Artspace, Petone</span></div>
           </div>
@@ -100,5 +100,6 @@
 </footer>
 
 <script>document.querySelectorAll('[data-year]').forEach((n) => { n.textContent = new Date().getFullYear(); });</script>
+<script type="module" src="/js/about.js"></script>
 </body>
 </html>
