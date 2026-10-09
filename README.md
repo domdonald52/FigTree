@@ -97,6 +97,7 @@ A piece with no link shows **Enquire →** (to the contact form) instead of Buy.
 - Collect customers' addresses: shipping, New Zealand only; add shipping rates (e.g. "Courier, insured" and "Pick-up — arranged by email").
 - After payment: *Don't show confirmation page* → redirect to `https://<site>/order-thanks.html`.
 - Leave payment methods on automatic (Stripe shows cards, Apple Pay, Google Pay etc.).
+- Tick **Require customers to accept your terms of service** (needs the terms URL `https://<site>/terms.html` set once under Stripe Settings → Business → Public details).
 - Leave automatic tax **off** unless Cate is GST-registered.
 - Keep the piece's `key` in the sheet the same once it's listed.
 
@@ -107,6 +108,10 @@ A piece with no link shows **Enquire →** (to the contact form) instead of Buy.
 3. Netlify → Project configuration → Environment variables → add `STRIPE_WEBHOOK_SECRET` with that value (scope: Functions; mark it secret). Redeploy.
 
 No Stripe API key is used anywhere. Never paste keys into the code, the sheet or a chat. Test first in a Stripe **sandbox** with test cards (e.g. 4242 4242 4242 4242), then repeat the webhook step in live mode.
+
+## Terms & privacy
+
+`site/terms.html` sets out the terms for buying from the site, commissions and workshops, plus a privacy statement, written to fit NZ consumer law (no blanket "no refunds": change-of-mind refunds can be refused, but faulty/damaged/not-as-described goods are covered by the Consumer Guarantees Act). It's linked from every footer, the studio section, the workshop FAQ and the contact form. Buyers accept it at Stripe checkout (terms checkbox) and in Humanitix (custom refund policy + a terms checkbox question). Not legal advice; have it checked before launch.
 
 ## Handing everything over to Cate
 
