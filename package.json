@@ -2,13 +2,14 @@
   "name": "figtree-studio",
   "private": true,
   "type": "module",
-  "description": "Website for Cate Pates \u00b7 Fig Tree Studio",
+  "description": "Website for Cate Pates · Fig Tree Studio",
   "scripts": {
     "ora": "node scripts/fetch-ora.mjs",
     "build": "npm run ora && npm run vault",
     "vault": "node scripts/fetch-vault.mjs"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.4",
     "sharp": "^0.34.0"
   }
 }

@@ -59,7 +59,7 @@ a:hover { color: var(--green); }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 32px; border-top: 1px solid var(--line); padding-top: 28px; margin-bottom: 40px; }
 .section-head .stack { gap: 6px; }
 .gallery-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px; padding: 40px 0 28px; }
-[data-vault] .gallery-head { margin-top: 48px; border-top: 1px solid var(--line); }
+[data-vault] .gallery-head, [data-studio]:not([hidden]) + [data-ora] .gallery-head { margin-top: 48px; border-top: 1px solid var(--line); }
 .live-note { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
 .live-note::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 @media (max-width: 600px) { .section { padding-block: 64px; } }
@@ -75,6 +75,8 @@ a:hover { color: var(--green); }
 .piece-title { font-family: var(--serif); font-size: 23px; font-weight: 500; line-height: 1.2; }
 .piece-meta { font-size: 14px; color: var(--muted); }
 .piece-meta strong { color: var(--ink); font-weight: 600; }
+.piece.is-sold img { opacity: .55; }
+.piece-sold { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
 .piece-buy { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--green); }
 .empty { padding: 56px 32px; background: var(--soft); display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
 .empty p { margin: 0; }

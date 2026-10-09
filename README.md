@@ -15,7 +15,7 @@ Website for ceramic artist Cate Pates (Fig Tree Studio, Lower Hutt, Wellington),
 
 ## Next steps
 
-1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**, **Media**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
+1. Create the Google Sheet (tabs **Workshops**, **Galleries**, **Exhibitions**, **Media**, **Studio**), share it with Cate as an editor and set *Anyone with the link → Viewer*; then connect the site to it.
 2. Optional: create a Netlify build hook and save it in GitHub as `NETLIFY_BUILD_HOOK` so ORA photos can be refreshed by hand (see below).
 3. Confirm with Cate: design choice, workshop details, Wellington Artspace listing, and ask ORA about using their photos.
 
@@ -24,7 +24,7 @@ The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instru
 | Page | File |
 |---|---|
 | Home | `site/index.html` |
-| Gallery — available now at ORA and The Vault + selected past work | `site/work.html` |
+| Gallery — from Cate's studio (Stripe), at ORA and The Vault + selected past work | `site/work.html` |
 | Workshops | `site/workshops.html` |
 | Media — articles, podcasts, radio, video | `site/media.html` |
 | About + contact form | `site/about.html` (form handled by Netlify Forms; thank-you page `site/thanks.html`) |
@@ -67,6 +67,48 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 ## Pieces at The Vault
 
 `scripts/fetch-vault.mjs` does the same job for The Vault (2 Plimmer Steps, Wellington) on every build: it reads Cate's artist page on thevaultnz.com and each product page, frames the photos the same way (shared code in `scripts/frame-photo.mjs`) and writes `site/data/vault.json` and `site/vault/`. The Vault's shop has no data feed and can't be checked from the browser, so unlike ORA the Vault list is as of the last build: sold pieces drop off, and new ones appear, at the next deploy. If the page can't be read, the previous list is kept.
+
+## Selling from the studio (Stripe payment links)
+
+Pieces Cate sells herself appear under **From Cate's studio** on the Gallery page. They come from `site/data/studio.json` (later the **Studio** tab of the Google Sheet: `key | title | price | size | photo | link | sold | show`). The two current entries are **placeholders** — remove them before going live. See `site/js/studio.js` for the fields.
+
+How a sale works:
+
+1. Each piece has its own Stripe **payment link** (pasted into `link`). The Buy button adds `client_reference_id=<key>` to it, so Stripe knows which piece it was.
+2. The buyer pays on Stripe's checkout page and is sent to `/order-thanks.html`.
+3. Stripe calls `/api/stripe-webhook` (`netlify/functions/stripe-webhook.mjs`). The function checks Stripe's signature and, once the payment has gone through, records the piece as sold (Netlify Blobs).
+4. The Gallery page asks `/api/studio-sold` and shows the piece as **Sold** straight away — no rebuild, no deploy credits. Cate can also type `yes` in the `sold` column.
+
+A piece with no link shows **Enquire →** (to the contact form) instead of Buy.
+
+### Setting up each payment link (Stripe Dashboard → Payment links → New)
+
+- Product: the piece's name, photo and NZD price, one-off.
+- Quantity: fixed at 1. **Limit the number of payments: 1** (so it can never sell twice).
+- Collect customers' addresses: shipping, New Zealand only; add shipping rates (e.g. "Courier, insured" and "Pick-up — arranged by email").
+- After payment: *Don't show confirmation page* → redirect to `https://<site>/order-thanks.html`.
+- Leave payment methods on automatic (Stripe shows cards, Apple Pay, Google Pay etc.).
+- Leave automatic tax **off** unless Cate is GST-registered.
+- Keep the piece's `key` in the sheet the same once it's listed.
+
+### Connecting the webhook (once per Stripe account, and again for live mode)
+
+1. Stripe Dashboard → Developers → Webhooks → **Add endpoint**: `https://<site>/api/stripe-webhook`, events `checkout.session.completed` and `checkout.session.async_payment_succeeded`.
+2. Copy the endpoint's **signing secret** (`whsec_…`).
+3. Netlify → Project configuration → Environment variables → add `STRIPE_WEBHOOK_SECRET` with that value (scope: Functions; mark it secret). Redeploy.
+
+No Stripe API key is used anywhere. Never paste keys into the code, the sheet or a chat. Test first in a Stripe **sandbox** with test cards (e.g. 4242 4242 4242 4242), then repeat the webhook step in live mode.
+
+## Handing everything over to Cate
+
+Everything is currently in Dom's accounts. A shared studio email on her domain (e.g. hello@catepates.co.nz, forwarding to both) makes the move easiest — use it for all the new accounts.
+
+- [ ] **Stripe** — can't be transferred to another person (it's tied to the owner's identity and bank account). Cate creates her own account, verifies it and adds her bank account, then invites Dom as a team member. Recreate the products and payment links there, paste the new links into the sheet, and repeat *Connecting the webhook* with the new signing secret.
+- [ ] **GitHub** — Settings → Danger zone → *Transfer ownership* to Cate's account. She adds Dom back as a collaborator and installs the Claude GitHub app on the repository so Claude sessions can keep working on it.
+- [ ] **Netlify** — either *Transfer project* to a team Cate owns (needs you both on that team), or create a new project in her account from the repository (10 minutes). Then: add `STRIPE_WEBHOOK_SECRET`, set the production branch to `main` and branch deploys as now, move the custom domain, export old form submissions, turn on form notifications, and update the Stripe webhook URL if the site address changed.
+- [ ] **Google Sheet** — Share → make Cate the owner; Dom stays an editor.
+- [ ] **Domain** — check catepates.co.nz is registered in Cate's name at MyHost.
+- [ ] **Instagram / Facebook / ORA / The Vault** — nothing to move; the site only links to them.
 
 ## Netlify setup
 

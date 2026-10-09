@@ -1,0 +1,20 @@
+[
+  {
+    "key": "placeholder-fox-house",
+    "title": "Placeholder: Fox house",
+    "price": "$320",
+    "size": "120 × 45 × 225 mm",
+    "photo": "/img/past/fox-house.jpg",
+    "link": "",
+    "sold": false
+  },
+  {
+    "key": "placeholder-lovebirds",
+    "title": "Placeholder: Lovebirds",
+    "price": "$135",
+    "size": "85 × 65 × 100 mm",
+    "photo": "/img/past/lovebirds.jpg",
+    "link": "",
+    "sold": true
+  }
+]
