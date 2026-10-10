@@ -4,6 +4,7 @@
 
 import { getStore } from '@netlify/blobs';
 import { parseGviz } from './sheet.mjs';
+import { salesCount } from './studio-sold.mjs';
 import { ARTIST_PAGE, fetchText, listPieces } from '../../scripts/vault-parse.mjs';
 
 const TABS = ['Workshops', 'Studio', 'Galleries', 'Exhibitions', 'Media'];
@@ -46,7 +47,8 @@ export default async (req) => {
 
   let sold = null;
   try {
-    sold = (await getStore('studio-sold').list()).blobs.map((b) => b.key);
+    const counts = salesCount((await getStore('studio-sold').list()).blobs.map((b) => b.key));
+    sold = Object.entries(counts).map(([code, n]) => (n > 1 ? `${code} ×${n}` : code));
   } catch (err) {
     sold = `unavailable (${err.message})`;
   }

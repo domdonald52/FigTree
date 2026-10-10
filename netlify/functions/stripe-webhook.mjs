@@ -1,6 +1,8 @@
 // Stripe calls this after every checkout on one of Cate's payment links.
-// When a payment has gone through it records the piece as sold, so the Gallery page
-// can show "Sold" straight away (see studio-sold.mjs and site/js/studio.js).
+// When a payment has gone through it records the sale, so the Gallery page can show
+// "Sold" straight away (see studio-sold.mjs and site/js/studio.js). Each sale is kept
+// under "<piece code>/<checkout session>", so prints sold in editions can be counted;
+// Stripe retrying the same event just rewrites the same entry.
 //
 // Needs one environment variable in Netlify (never in the code):
 //   STRIPE_WEBHOOK_SECRET  the endpoint's signing secret (whsec_…) from the Stripe Dashboard
@@ -53,11 +55,11 @@ export default async (req) => {
   const event = JSON.parse(body);
   const key = soldPiece(event);
   if (key) {
-    await getStore('studio-sold').setJSON(key, {
+    await getStore('studio-sold').setJSON(`${key}/${event.data.object.id}`, {
       soldAt: new Date(event.created * 1000).toISOString(),
       session: event.data.object.id,
     });
-    console.log(`Studio piece sold: ${key}`);
+    console.log(`Studio sale: ${key}`);
   }
   return new Response('ok');
 };
