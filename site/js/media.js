@@ -5,6 +5,10 @@
 // Items marked "draft": true are not shown. When nothing is left, the empty message appears.
 // Rows come from the Media tab of Cate's Google Sheet when it's connected (see sheet.js),
 // otherwise from data/media.json.
+//
+// A link to a file in Google Drive (an interview recording Cate keeps in Drive) plays right
+// here: "Listen" opens Drive's own small player under the entry instead of leaving the site.
+// The file must be shared "Anyone with the link". Other links open as usual.
 
 import { sheetRows, isYes } from './sheet.js';
 
@@ -22,9 +26,40 @@ function monthLabel(iso) {
   return new Date(`${y}-${m}-${d}T12:00:00`).toLocaleDateString('en-NZ', { month: 'long', year: 'numeric' });
 }
 
+// "https://drive.google.com/file/d/<id>/view?…" → <id>
+function driveId(link) {
+  return String(link || '').match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/)?.[1];
+}
+
+// A Listen/Watch button that opens Drive's player inside the entry.
+function playerToggle(item, verb, article) {
+  const isVideo = (item.type || '').toLowerCase() === 'video';
+  const button = el('button', { type: 'button', className: 'text-link media-play', textContent: `${verb} ▸` });
+  button.setAttribute('aria-expanded', 'false');
+  button.addEventListener('click', () => {
+    let player = article.querySelector('.media-player');
+    if (!player) {
+      player = el('div', { className: `media-player${isVideo ? ' is-video' : ''}` },
+        el('iframe', {
+          src: `https://drive.google.com/file/d/${driveId(item.link)}/preview`,
+          title: `${verb}: ${item.title}`,
+          allow: 'autoplay',
+          loading: 'lazy',
+        }));
+      article.querySelector('.session-body').append(player);
+    } else {
+      player.hidden = !player.hidden;
+    }
+    const open = !player.hidden;
+    button.setAttribute('aria-expanded', String(open));
+    button.textContent = open ? 'Close player' : `${verb} ▸`;
+  });
+  return button;
+}
+
 function row(item) {
   const verb = ACTION[(item.type || '').toLowerCase()] || 'Read';
-  return el(
+  const article = el(
     'article',
     { className: 'session', style: 'align-items: flex-start' },
     el(
@@ -40,8 +75,10 @@ function row(item) {
       item.outlet ? el('span', { className: 'piece-meta', textContent: item.outlet }) : '',
       item.blurb ? el('p', { textContent: item.blurb }) : '',
     ),
-    item.link ? el('a', { className: 'text-link', style: 'padding-top: 4px', href: item.link, textContent: `${verb} →` }) : '',
   );
+  if (item.link && driveId(item.link)) article.append(playerToggle(item, verb === 'Read' ? 'Open' : verb, article));
+  else if (item.link) article.append(el('a', { className: 'text-link', style: 'padding-top: 4px', href: item.link, textContent: `${verb} →` }));
+  return article;
 }
 
 async function init() {

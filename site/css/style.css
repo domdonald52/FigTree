@@ -190,3 +190,10 @@ blockquote.pull .attribution { font-size: 13px; letter-spacing: .14em; text-tran
   .nav a[href="/about.html#contact"], .nav a[href="#contact"] { display: none; }
   .hero-actions .button { flex: 1 1 100%; }
 }
+
+/* Media page: a Drive recording playing inside its entry */
+.media-play { padding: 4px 0 6px; border: 0; border-bottom: 1px solid currentColor; background: none; color: var(--ink); font: inherit; cursor: pointer; white-space: nowrap; }
+.media-player { margin-top: 14px; width: 100%; max-width: 560px; }
+.media-player[hidden] { display: none; }
+.media-player iframe { display: block; width: 100%; height: 96px; border: 1px solid var(--line); background: var(--soft); }
+.media-player.is-video iframe { height: auto; aspect-ratio: 16 / 9; }

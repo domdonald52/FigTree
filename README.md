@@ -95,6 +95,10 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 - When happy, merge them into `main` in one go (one pull request = one production deploy).
 - Builds are skipped automatically when only files outside the site change (e.g. this README) — see `ignore` in `netlify.toml`.
 
+## Media recordings in Google Drive
+
+On the Media page (`site/js/media.js`), an entry whose link is a Google Drive file gets a *Listen* (or *Watch*) button that opens Drive's own player (`/file/d/<id>/preview`) inside the entry, so visitors stay on the site. Other links open as before. The Drive file must be shared *Anyone with the link*.
+
 ## Gallery type filter
 
 `site/js/gallery-filter.js` adds *All · Houses · Vessels · Creatures* buttons to the Gallery page; a *Prints* button appears once any piece is a print. Each card's type comes from `site/js/piece-type.js`: the Studio tab's optional **Type** column first, then words in the title, then ORA's own product tags (e.g. "Vase", "House", "animal"). Pieces that fit none (a tile, wall hearts) show under *All* only. Studio rows typed Print are drawn in their own **Prints** section (`#prints`) after all the ceramics, not under *From Cate's studio*. The choice is kept in the address, e.g. `/work.html?type=vessel`, so it can be linked to.
