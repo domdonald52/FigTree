@@ -13,6 +13,8 @@
 //     <div data-ora-empty hidden>…Everything has found a home…</div>
 //   </section>
 
+import { typeOf } from './piece-type.js';
+
 const FEED = 'https://oragallery.co.nz/collections/cate-pates/products.json?limit=250';
 
 function priceText(value) {
@@ -37,6 +39,7 @@ function fromFeed(p, price) {
   return {
     handle: p.handle,
     title: p.title,
+    type: typeOf(p.title, p.tags),
     price,
     size: sizeFrom(p.body_html),
     image: src ? `${src}${src.includes('?') ? '&' : '?'}width=900` : '',
@@ -64,6 +67,7 @@ function card(p, buy = 'Buy at ORA →') {
     el('span', { className: 'piece-buy', textContent: buy }),
   );
   link.dataset.oraHandle = p.handle;
+  link.dataset.type = p.type || typeOf(p.title);
   return link;
 }
 

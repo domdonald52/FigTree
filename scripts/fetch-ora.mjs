@@ -13,6 +13,7 @@
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { framePhoto } from './frame-photo.mjs';
+import { typeOf } from '../site/js/piece-type.js';
 
 const SHOP = 'https://oragallery.co.nz';
 const COLLECTION = `${SHOP}/collections/cate-pates/products.json?limit=250`;
@@ -72,6 +73,7 @@ async function main() {
     pieces.push({
       handle: p.handle,
       title: p.title,
+      type: typeOf(p.title, p.tags),
       price: priceFrom(variant),
       size: sizeFrom(p.body_html ?? ''),
       image: `ora/${file}`,

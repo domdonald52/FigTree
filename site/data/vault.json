@@ -4,6 +4,7 @@
     {
       "handle": "catep25",
       "title": "Heart Ruru Tile",
+      "type": "other",
       "price": "$87",
       "size": "150 × 180 mm",
       "image": "vault/catep25.jpg",
@@ -13,6 +14,7 @@
     {
       "handle": "catep27",
       "title": "Hanging Hare House Sculpture",
+      "type": "house",
       "price": "$305",
       "size": "125 × 35 × 190 mm",
       "image": "vault/catep27.jpg",
@@ -22,6 +24,7 @@
     {
       "handle": "catep21",
       "title": "Fox Sculpture with Left Raven",
+      "type": "creature",
       "price": "$400",
       "size": "110 × 90 × 195 mm",
       "image": "vault/catep21.jpg",
@@ -31,6 +34,7 @@
     {
       "handle": "catep14",
       "title": "Hanging Bird House Sculpture",
+      "type": "house",
       "price": "$320",
       "size": "120 × 45 × 225 mm",
       "image": "vault/catep14.jpg",
@@ -40,6 +44,7 @@
     {
       "handle": "catep16",
       "title": "Two Story Ceramic House",
+      "type": "house",
       "price": "$135",
       "size": "75 × 65 × 140 mm",
       "image": "vault/catep16.jpg",
@@ -49,6 +54,7 @@
     {
       "handle": "catep12",
       "title": "Fox Sculpture",
+      "type": "creature",
       "price": "$295",
       "size": "90 × 120 × 140 mm",
       "image": "vault/catep12.jpg",
@@ -58,6 +64,7 @@
     {
       "handle": "catep09",
       "title": "White Bird Ceramic House",
+      "type": "house",
       "price": "$135",
       "size": "85 × 65 × 100 mm",
       "image": "vault/catep09.jpg",
@@ -67,6 +74,7 @@
     {
       "handle": "catep04",
       "title": "Floral Vessel",
+      "type": "vessel",
       "price": "$240",
       "size": "111 × 75 × 135 mm",
       "image": "vault/catep04.jpg",
@@ -76,6 +84,7 @@
     {
       "handle": "catep02",
       "title": "Filigree Patterned Vessel",
+      "type": "vessel",
       "price": "$259",
       "size": "110 × 85 × 185 mm",
       "image": "vault/catep02.jpg",

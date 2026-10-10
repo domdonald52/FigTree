@@ -45,6 +45,7 @@
     <div class="stack" style="gap: 16px">
       <h1 class="h1" style="font-size: clamp(40px, 5.5vw, 72px); line-height: 1.05">Creatures, vessels &amp; little houses</h1>
       <p class="lede" style="max-width: 52ch">Every piece is hand-built in earthenware and one of a kind.</p>
+      <div class="filter" data-filter hidden></div>
     </div>
   </section>
 
@@ -57,17 +58,17 @@
         </div>
       </div>
 
-      <div data-studio id="studio" hidden>
+      <div data-studio id="studio" data-filter-block hidden>
         <div class="gallery-head">
           <div class="stack" style="gap: 2px">
             <h3 class="h3">From Cate's studio</h3>
             <span class="piece-meta">Buy direct · courier anywhere in New Zealand · <a href="/terms.html">terms</a></span>
           </div>
         </div>
-        <div class="grid" data-studio-grid></div>
+        <div class="grid" data-studio-grid data-filter-grid></div>
       </div>
 
-      <div data-ora id="ora">
+      <div data-ora id="ora" data-filter-block>
         <div class="gallery-head">
           <div class="stack" style="gap: 2px">
             <h3 class="h3">ORA Gallery</h3>
@@ -75,7 +76,7 @@
           </div>
           <a class="button dark" href="https://oragallery.co.nz/collections/cate-pates">Shop at ORA</a>
         </div>
-        <div class="grid" data-ora-grid></div>
+        <div class="grid" data-ora-grid data-filter-grid></div>
         <div class="empty" data-ora-empty hidden>
           <p class="quote">Everything at ORA has found a home for now.</p>
           <p class="lede">New pieces go to the galleries as they come out of the kiln. Follow along on Instagram or Facebook to see what's next.</p>
@@ -86,7 +87,7 @@
         </div>
       </div>
 
-      <div data-vault id="vault" hidden>
+      <div data-vault id="vault" data-filter-block hidden>
         <div class="gallery-head">
           <div class="stack" style="gap: 2px">
             <h3 class="h3">The Vault</h3>
@@ -94,8 +95,9 @@
           </div>
           <a class="button dark" href="https://www.thevaultnz.com/category/cate-pates/474.aspx">Shop at The Vault</a>
         </div>
-        <div class="grid" data-vault-grid></div>
+        <div class="grid" data-vault-grid data-filter-grid></div>
       </div>
+      <p class="filter-none for-sale" data-filter-for-sale-none hidden></p>
     </div>
   </section>
 
@@ -105,13 +107,13 @@
         <h2 class="h2">Selected past work</h2>
         <p class="piece-meta" style="font-size: 16px">Pieces that have already found homes — hanging houses, creatures and more.</p>
       </div>
-      <div class="grid small">
-        <figure class="piece"><img src="/img/past/owl-house.jpg" alt="Hanging house with a white owl and a small ladder" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Owl house</figcaption></figure>
-        <figure class="piece"><img src="/img/past/hare-in-the-ivy.jpg" alt="Hanging house with a white hare among green ivy leaves" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Hare in the ivy</figcaption></figure>
-        <figure class="piece"><img src="/img/past/dove-house.jpg" alt="Violet lace house with doves and tiny jugs on its shelves" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Dove house</figcaption></figure>
-        <figure class="piece"><img src="/img/past/fox-house.jpg" alt="Green lace house with a fox and a crow" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Fox house</figcaption></figure>
-        <figure class="piece"><img src="/img/past/lovebirds.jpg" alt="Small lace house with two yellow birds under a heart" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Lovebirds</figcaption></figure>
-        <figure class="piece"><img src="/img/past/bird-tree.jpg" alt="White ceramic tree with pink roses and patterned birds" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Bird tree</figcaption></figure>
+      <div class="grid small" data-filter-grid>
+        <figure class="piece" data-type="house"><img src="/img/past/owl-house.jpg" alt="Hanging house with a white owl and a small ladder" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Owl house</figcaption></figure>
+        <figure class="piece" data-type="house"><img src="/img/past/hare-in-the-ivy.jpg" alt="Hanging house with a white hare among green ivy leaves" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Hare in the ivy</figcaption></figure>
+        <figure class="piece" data-type="house"><img src="/img/past/dove-house.jpg" alt="Violet lace house with doves and tiny jugs on its shelves" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Dove house</figcaption></figure>
+        <figure class="piece" data-type="house"><img src="/img/past/fox-house.jpg" alt="Green lace house with a fox and a crow" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Fox house</figcaption></figure>
+        <figure class="piece" data-type="house"><img src="/img/past/lovebirds.jpg" alt="Small lace house with two yellow birds under a heart" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Lovebirds</figcaption></figure>
+        <figure class="piece" data-type="creature"><img src="/img/past/bird-tree.jpg" alt="White ceramic tree with pink roses and patterned birds" width="900" height="1125" loading="lazy"><figcaption class="piece-title">Bird tree</figcaption></figure>
       </div>
       <div class="stack" style="align-items: center; text-align: center; gap: 8px; margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--soft-line)">
         <p class="quote" style="font-size: clamp(36px, 4.2vw, 56px); line-height: 1.1">Fallen for one of these?</p>
@@ -136,6 +138,7 @@
 <script>document.querySelectorAll('[data-year]').forEach((n) => { n.textContent = new Date().getFullYear(); });</script>
 <script type="module" src="/js/ora.js"></script>
 <script type="module" src="/js/studio.js"></script>
+<script type="module" src="/js/gallery-filter.js"></script>
 <script src="/js/links.js" defer></script>
 </body>
 </html>

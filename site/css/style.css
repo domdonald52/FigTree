@@ -63,8 +63,18 @@ a:hover { color: var(--green); }
 .stack { display: flex; flex-direction: column; gap: 20px; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px 32px; border-top: 1px solid var(--line); padding-top: 28px; margin-bottom: 40px; }
 .section-head .stack { gap: 6px; }
+/* Gallery type filter */
+.filter { display: flex; flex-wrap: wrap; gap: 4px 28px; margin-top: 12px; }
+.filter[hidden] { display: none; }
+.filter button { min-height: 44px; padding: 0; border: 0; border-bottom: 1px solid transparent; background: none; color: var(--muted); font: inherit; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; cursor: pointer; }
+.filter button:hover { color: var(--ink); }
+.filter button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.filter-none { margin: 0; color: var(--muted); font-size: 16px; }
+.piece[hidden], .filter-none[hidden] { display: none; }
+.is-filtered-out { display: none !important; }
+.filter-none.for-sale { padding: 40px 0 8px; }
 .gallery-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px; padding: 40px 0 28px; }
-[data-vault] .gallery-head, [data-studio]:not([hidden]) + [data-ora] .gallery-head { margin-top: 48px; border-top: 1px solid var(--line); }
+[data-vault] .gallery-head, [data-studio]:not([hidden]):not(.is-filtered-out) + [data-ora] .gallery-head { margin-top: 48px; border-top: 1px solid var(--line); }
 .live-note { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
 .live-note::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 @media (max-width: 600px) { .section { padding-block: 64px; } }

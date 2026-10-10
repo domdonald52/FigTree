@@ -9,6 +9,7 @@
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { framePhoto } from './frame-photo.mjs';
+import { typeOf } from '../site/js/piece-type.js';
 import { ARTIST_PAGE, fetchText, listPieces, sizeFrom, textOf } from './vault-parse.mjs';
 
 const OUT_DIR = path.resolve('site');
@@ -50,6 +51,7 @@ async function main() {
     pieces.push({
       handle: p.handle,
       title: p.title,
+      type: typeOf(p.title),
       price: p.price,
       size,
       image: `vault/${file}`,

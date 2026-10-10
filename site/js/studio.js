@@ -10,6 +10,7 @@
 // Cate can also type sold = yes in the sheet. A piece with no link shows "Enquire" instead.
 
 import { sheetRows, isYes, photoUrl } from './sheet.js';
+import { typeOf } from './piece-type.js';
 
 function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
@@ -34,9 +35,13 @@ export function buyUrl(link, key) {
 function card(p, isSold) {
   const meta = el('span', { className: 'piece-meta' }, el('strong', { textContent: p.price || '' }), p.size ? ` · ${p.size}` : '');
   const img = el('img', { src: p.photo, alt: `${p.title} by Cate Pates`, loading: 'lazy', width: 900, height: 1125 });
+  const typed = (node) => {
+    node.dataset.type = typeOf(p.title, [], p.type);
+    return node;
+  };
   if (isSold) {
-    return el('div', { className: 'piece is-sold' }, img, el('span', { className: 'piece-title', textContent: p.title }), meta,
-      el('span', { className: 'piece-sold', textContent: 'Sold' }));
+    return typed(el('div', { className: 'piece is-sold' }, img, el('span', { className: 'piece-title', textContent: p.title }), meta,
+      el('span', { className: 'piece-sold', textContent: 'Sold' })));
   }
   let href = '/about.html#contact';
   let label = 'Enquire →';
@@ -48,8 +53,8 @@ function card(p, isSold) {
       // not a valid link: fall back to enquiring
     }
   }
-  return el('a', { className: 'piece', href }, img, el('span', { className: 'piece-title', textContent: p.title }), meta,
-    el('span', { className: 'piece-buy', textContent: label }));
+  return typed(el('a', { className: 'piece', href }, img, el('span', { className: 'piece-title', textContent: p.title }), meta,
+    el('span', { className: 'piece-buy', textContent: label })));
 }
 
 async function soldKeys() {
@@ -70,7 +75,7 @@ async function init() {
   if (rows) {
     pieces = rows.map((r) => ({
       key: r.code, title: r.title, price: r.price, size: r.size, photo: photoUrl(r.photo_link),
-      link: r.payment_link, sold: isYes(r.sold), draft: !isYes(r.show),
+      link: r.payment_link, sold: isYes(r.sold), draft: !isYes(r.show), type: r.type,
     }));
   } else {
     try {

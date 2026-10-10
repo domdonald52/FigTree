@@ -46,7 +46,7 @@ The site uses the "Gallery" design (clean and white, Cormorant Garamond + Instru
 | Page | File |
 |---|---|
 | Home | `site/index.html` |
-| Gallery — from Cate's studio (Stripe), at ORA and The Vault + selected past work | `site/work.html` |
+| Gallery — from Cate's studio (Stripe), at ORA and The Vault + selected past work, with a type filter (houses, vessels, creatures, prints) | `site/work.html` |
 | Workshops | `site/workshops.html` |
 | Media — articles, podcasts, radio, video | `site/media.html` |
 | About + contact form | `site/about.html` (form handled by Netlify Forms; thank-you page `site/thanks.html`) |
@@ -94,6 +94,10 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 - Changes go to `claude/cate-pates-portfolio-l2zfyj` first and show on the free preview link above.
 - When happy, merge them into `main` in one go (one pull request = one production deploy).
 - Builds are skipped automatically when only files outside the site change (e.g. this README) — see `ignore` in `netlify.toml`.
+
+## Gallery type filter
+
+`site/js/gallery-filter.js` adds *All · Houses · Vessels · Creatures* buttons to the Gallery page; a *Prints* button appears once any piece is a print. Each card's type comes from `site/js/piece-type.js`: the Studio tab's optional **Type** column first, then words in the title, then ORA's own product tags (e.g. "Vase", "House", "animal"). Pieces that fit none (a tile, wall hearts) show under *All* only. The choice is kept in the address, e.g. `/work.html?type=vessel`, so it can be linked to.
 
 ## Pieces at The Vault
 

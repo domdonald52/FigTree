@@ -4,6 +4,7 @@
     {
       "handle": "dappled-leaves",
       "title": "Dappled Leaves",
+      "type": "vessel",
       "price": "$290",
       "size": "200 × 80 × 120 mm",
       "image": "ora/dappled-leaves.jpg",
@@ -13,6 +14,7 @@
     {
       "handle": "tui-blossom-vessel",
       "title": "Tui Blossom Vessel",
+      "type": "vessel",
       "price": "$330",
       "size": "170 × 80 × 125 mm",
       "image": "ora/tui-blossom-vessel.jpg",
@@ -22,6 +24,7 @@
     {
       "handle": "fox-1",
       "title": "Fox & Crow with Secret Rose",
+      "type": "creature",
       "price": "$400",
       "size": "200 × 110 × 90 mm",
       "image": "ora/fox-1.jpg",
@@ -31,6 +34,7 @@
     {
       "handle": "fox",
       "title": "Fox & Bluebird With Secret Rose",
+      "type": "creature",
       "price": "$400",
       "size": "225 × 110 × 120 mm",
       "image": "ora/fox.jpg",
@@ -40,6 +44,7 @@
     {
       "handle": "hanging-embossed-hearts-copy",
       "title": "Hanging Embossed Hearts",
+      "type": "other",
       "price": "$38",
       "size": "95 × 90 mm",
       "image": "ora/hanging-embossed-hearts-copy.jpg",
@@ -49,6 +54,7 @@
     {
       "handle": "emerald-with-dawn-roses-2",
       "title": "Emerald with Dawn Roses",
+      "type": "vessel",
       "price": "$300",
       "size": "200 × 145 × 110 mm",
       "image": "ora/emerald-with-dawn-roses-2.jpg",
@@ -58,6 +64,7 @@
     {
       "handle": "bloom-and-leaves-sing-life",
       "title": "Bloom and Leaves Sing Life",
+      "type": "vessel",
       "price": "$300",
       "size": "175 × 110 × 105 mm",
       "image": "ora/bloom-and-leaves-sing-life.jpg",
@@ -67,6 +74,7 @@
     {
       "handle": "large-hare",
       "title": "Large Hare",
+      "type": "creature",
       "price": "$380",
       "size": "215 × 115 × 95 mm",
       "image": "ora/large-hare.jpg",
@@ -76,6 +84,7 @@
     {
       "handle": "little-houses",
       "title": "Little Houses",
+      "type": "house",
       "price": "$135",
       "size": "110 × 85 × 70 mm",
       "image": "ora/little-houses.jpg",
