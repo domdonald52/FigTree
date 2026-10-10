@@ -102,8 +102,7 @@ async function salesCounts() {
 }
 
 async function init() {
-  const section = document.querySelector('[data-studio]');
-  if (!section) return;
+  if (!document.querySelector('[data-studio], [data-prints]')) return;
   let pieces = [];
   const rows = await sheetRows('Studio');
   if (rows) {
@@ -125,8 +124,16 @@ async function init() {
   const stock = new Map(pieces.map((p) => [p, stockOf(p, counts[keyOf(p)] || 0)]));
   // Available pieces first, sold ones after.
   pieces.sort((a, b) => stock.get(a).sold - stock.get(b).sold);
-  section.querySelector('[data-studio-grid]').replaceChildren(...pieces.map((p) => card(p, stock.get(p))));
-  section.hidden = false;
+  // Prints get their own section after all the ceramics; everything else is "From Cate's studio".
+  const isPrint = (p) => typeOf(p.title, [], p.type) === 'print';
+  const show = (sel, list) => {
+    const block = document.querySelector(sel);
+    if (!block) return;
+    block.querySelector('.grid').replaceChildren(...list.map((p) => card(p, stock.get(p))));
+    block.hidden = list.length === 0;
+  };
+  show('[data-studio]', pieces.filter((p) => !isPrint(p)));
+  show('[data-prints]', pieces.filter(isPrint));
   jumpToHash();
 }
 

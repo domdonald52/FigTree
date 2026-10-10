@@ -97,7 +97,7 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 
 ## Gallery type filter
 
-`site/js/gallery-filter.js` adds *All · Houses · Vessels · Creatures* buttons to the Gallery page; a *Prints* button appears once any piece is a print. Each card's type comes from `site/js/piece-type.js`: the Studio tab's optional **Type** column first, then words in the title, then ORA's own product tags (e.g. "Vase", "House", "animal"). Pieces that fit none (a tile, wall hearts) show under *All* only. The choice is kept in the address, e.g. `/work.html?type=vessel`, so it can be linked to.
+`site/js/gallery-filter.js` adds *All · Houses · Vessels · Creatures* buttons to the Gallery page; a *Prints* button appears once any piece is a print. Each card's type comes from `site/js/piece-type.js`: the Studio tab's optional **Type** column first, then words in the title, then ORA's own product tags (e.g. "Vase", "House", "animal"). Pieces that fit none (a tile, wall hearts) show under *All* only. Studio rows typed Print are drawn in their own **Prints** section (`#prints`) after all the ceramics, not under *From Cate's studio*. The choice is kept in the address, e.g. `/work.html?type=vessel`, so it can be linked to.
 
 ## Pieces at The Vault
 
