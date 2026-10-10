@@ -95,6 +95,12 @@ On the free plan each production deploy costs 15 of the 300 monthly credits; bra
 - When happy, merge them into `main` in one go (one pull request = one production deploy).
 - Builds are skipped automatically when only files outside the site change (e.g. this README) — see `ignore` in `netlify.toml`.
 
+## Coming-soon page (live site until launch)
+
+Until Cate is ready, catepates.co.nz (the production deploy, built from `main`) shows only `coming-soon/index.html`: a one-page holding page in the site's style, linking to ORA, The Vault, Instagram and Facebook. Every address on the live site shows it (`coming-soon/_redirects`). This is set by the `[context.production]` block in `netlify.toml`; branch and preview deploys keep building the full site from `site/`.
+
+**To launch:** delete the `[context.production]` block (and the noindex header block) in `netlify.toml`, then publish `main`.
+
 ## Media recordings in Google Drive
 
 On the Media page (`site/js/media.js`), an entry whose link is a Google Drive file gets a *Listen* (or *Watch*) button that opens Drive's own player (`/file/d/<id>/preview`) inside the entry, so visitors stay on the site. Other links open as before. The Drive file must be shared *Anyone with the link*.
