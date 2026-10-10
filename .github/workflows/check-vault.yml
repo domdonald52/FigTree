@@ -1,0 +1,66 @@
+# Checks once a day that Cate's pieces can still be read from The Vault's website.
+# If not, it opens a GitHub issue that mentions @domdonald52, so GitHub sends an email.
+# When the check passes again, it closes that issue. Uses no Netlify credits.
+# To test the email: Actions → Check The Vault → Run workflow → tick "Pretend it failed".
+name: Check The Vault
+
+on:
+  schedule:
+    - cron: '17 19 * * *'   # every day, about 8am New Zealand time
+  workflow_dispatch:
+    inputs:
+      test:
+        description: Pretend it failed (to test the email)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read The Vault
+        id: vault
+        run: |
+          set +e
+          if [ "${{ inputs.test }}" = "true" ]; then
+            echo "Test run: pretending the check failed." | tee result.txt
+            status=1
+          else
+            node .github/scripts/check-vault.mjs | tee result.txt
+            status=${PIPESTATUS[0]}
+          fi
+          echo "failed=$([ $status -ne 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Open or close the alert issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FAILED: ${{ steps.vault.outputs.failed }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create vault-check --color D93F0B --description "The Vault list check" --force >/dev/null
+          open=$(gh issue list --label vault-check --state open --json number --jq '.[0].number')
+          if [ "$FAILED" = "true" ]; then
+            if [ -z "$open" ]; then
+              {
+                echo "@domdonald52 The daily check couldn't read Cate's pieces from The Vault, so the Vault list on the Gallery page has stopped updating. The site keeps showing the last list it had."
+                echo
+                echo '```'; cat result.txt; echo '```'
+                echo
+                echo "What to do: open https://www.thevaultnz.com/category/cate-pates/474.aspx. If Cate's pieces are there, The Vault has probably changed its page layout and \`scripts/vault-parse.mjs\` needs updating (ask Claude). This issue closes itself when the check works again."
+                echo
+                echo "Run: $RUN_URL"
+              } > body.md
+              gh issue create --title "The Vault list has stopped updating" --label vault-check --body-file body.md
+            else
+              echo "Alert issue #$open is already open; not opening another."
+            fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "The check works again: $(tail -n 1 result.txt)"
+          fi

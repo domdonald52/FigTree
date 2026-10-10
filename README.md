@@ -105,6 +105,10 @@ Until Cate is ready, catepates.co.nz (the production deploy, built from `main`) 
 
 On the Media page (`site/js/media.js`), an entry whose link is a Google Drive file gets a *Listen* (or *Watch*) button that opens Drive's own player (`/file/d/<id>/preview`) inside the entry, so visitors stay on the site. Other links open as before. The Drive file must be shared *Anyone with the link*.
 
+## Email alert if The Vault stops updating
+
+`.github/workflows/check-vault.yml` runs every morning on GitHub (free, no Netlify credits). It reads Cate's page on The Vault with the same code the site uses (`.github/scripts/check-vault.mjs` → `scripts/vault-parse.mjs`). If no pieces can be read, it opens a GitHub issue labelled `vault-check` that mentions @domdonald52, so GitHub emails Dom; it closes the issue by itself once the check passes again. To test the email: Actions → *Check The Vault* → Run workflow → tick *Pretend it failed* (then run it again unticked to close the test issue). Scheduled checks only run from `main`. GitHub pauses scheduled checks in a public repository after 60 days with no commits and emails a warning first; re-enable it under Actions if that happens.
+
 ## Gallery type filter
 
 `site/js/gallery-filter.js` adds *All · Houses · Vessels · Creatures* buttons to the Gallery page; a *Prints* button appears once any piece is a print. Each card's type comes from `site/js/piece-type.js`: the Studio tab's optional **Type** column first, then words in the title, then ORA's own product tags (e.g. "Vase", "House", "animal"). Pieces that fit none (a tile, wall hearts) show under *All* only. Studio rows typed Print are drawn in their own **Prints** section (`#prints`) after all the ceramics, not under *From Cate's studio*. The choice is kept in the address, e.g. `/work.html?type=vessel`, so it can be linked to.
